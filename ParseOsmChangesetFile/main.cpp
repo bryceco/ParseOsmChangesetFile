@@ -46,25 +46,6 @@ double GreatCircleDistance(double lon1, double lat1, double lon2, double lat2)
 	return meters;
 }
 
-class Substring {
-	const char * str;
-	const int length;
-	std::string _cstr;
-
-public:
-	Substring(const char * ptr, int len): str(ptr), length(len), _cstr() {
-	};
-	std::string c_str() {
-		if ( _cstr.length() == 0 ) {
-			_cstr = std::string(str,length);
-		}
-		return _cstr;
-	}
-	bool operator==(const Substring & s2) {
-		return length == s2.length && strncmp(str,s2.str,length);
-	}
-};
-
 static std::string FixEditorName( const std::string & orig )
 {
 	static const std::string names[] = {
@@ -114,7 +95,6 @@ static std::string FixEditorName( const std::string & orig )
 		"StreetComplete",
 		"teryt2osm",
 		"Vespucci",
-
 	};
 	const char * s = orig.c_str();
 	for ( int i = 0; i < sizeof names/sizeof names[0]; ++i ) {
@@ -303,8 +283,14 @@ bool parseXml( const char * s, const char * startDate )
 {
 	DateList	dateList;
 
-	typedef std::map<std::string,UserEditCount>	GoMapUserMap;
-	GoMapUserMap goMapUsers;
+	typedef std::map<std::string,UserEditCount>	PerEditorUserMap;	// map user-name to edit stats
+
+	typedef std::map<std::string,PerEditorUserMap> PerEditorMap; // map editor name to stats
+	PerEditorMap perEditorMap;
+	perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("Go Map!!",PerEditorUserMap()));
+	perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("Vespucci",PerEditorUserMap()));
+	perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("StreetComplete",PerEditorUserMap()));
+	perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("MapComplete",PerEditorUserMap()));
 
 	typedef std::map<std::string,long> ChangesetCommentMap;
 	ChangesetCommentMap changesetComments;
@@ -358,8 +344,10 @@ bool parseXml( const char * s, const char * startDate )
 					comment.first->second++;
 				}
 
-				if ( strncmp(changesetEditor.c_str(), "Go Map", 6) == 0 ) {
-					std::pair<GoMapUserMap::iterator,bool> result = goMapUsers.insert(std::pair<std::string,UserEditCount>(changesetUser,UserEditCount(1,editCount)));
+				auto it = perEditorMap.find( changesetEditor );
+				if ( it != perEditorMap.end() ) {
+					PerEditorUserMap & perEditor = it->second;
+					std::pair<PerEditorUserMap::iterator,bool> result = perEditor.insert(std::pair<std::string,UserEditCount>(changesetUser,UserEditCount(1,editCount)));
 					UserEditCount & editsForUser = result.first->second;
 					if ( !result.second ) {
 						editsForUser.changesetCount += 1;
@@ -380,20 +368,27 @@ bool parseXml( const char * s, const char * startDate )
 					}
 #endif
 				}
-
-				min_lat = max_lat = min_lon = max_lon = 0;
 			}
+			min_lat = max_lat = min_lon = max_lon = 0;
+			changesetDate = "";
+			changesetUser = "";
+			changesetEditor = "";
+			changesetComment = "";
+			changesetId = 0;
+			uid = 0;
+			editCount = 0;
 
 			// iterate over key/values
 			while ( GetKeyValue( s, key, klen, val, vlen ) ) {
 				if ( IsEqual( key, klen, "id" ) ) {
 					changesetId = atol( val );
 				} else if ( IsEqual( key, klen, "created_at" ) ) {
-					std::string prev = changesetDate;
+					static std::string prev = "";
 					changesetDate = UnescapeString( val, 10 );
 					if ( prev.length() >= 4 && prev[3] != changesetDate[3] ) {
 						printf("%s\n",changesetDate.c_str());
 					}
+					prev = changesetDate;
 				} else if ( IsEqual( key, klen, "user" ) ) {
 					changesetUser = UnescapeString( val, vlen );
 				} else if ( IsEqual( key, klen, "uid" ) ) {
@@ -496,6 +491,7 @@ bool parseXml( const char * s, const char * startDate )
 	}
 
 	// print average number of daily users for each editor
+	printf("\n");
 	printf( "Sizes of edit sets:\n");
 	for ( UserCountMap::iterator editor = userCount.begin(); editor != userCount.end(); ++editor ) {
 		double rate = (double)editor->second / dateCount;
@@ -505,6 +501,7 @@ bool parseXml( const char * s, const char * startDate )
 	}
 
 	// print average number of daily users for each editor
+	printf("\n");
 	printf( "Average daily users for editors:\n");
 	for ( UserCountMap::iterator editor = userCount.begin(); editor != userCount.end(); ++editor ) {
 		double rate = (double)editor->second / dateCount;
@@ -514,6 +511,7 @@ bool parseXml( const char * s, const char * startDate )
 	}
 
 	// print large edit area counts
+	printf("\n");
 	printf( "Number of large changeset areas:\n");
 	for ( LargeAreaMap::iterator editor = largeAreaMap.begin(); editor != largeAreaMap.end(); ++editor ) {
 		long rate = editor->second;
@@ -521,28 +519,43 @@ bool parseXml( const char * s, const char * startDate )
 	}
 
 	// print number of edits each user of Go Map made
-	printf( "\n");
-	printf( "Go Map users:\n");
-	struct GoMapUser {
-		const std::string		name;
-		UserEditCount			count;
-		GoMapUser( const std::string & name, UserEditCount count ) : name(name), count(count) {}
-		bool operator < (const GoMapUser & other) const	{ return count.date < other.count.date;	}
-	};
-	std::list<GoMapUser> goMapUserVector;
-	for ( GoMapUserMap::iterator user = goMapUsers.begin(); user != goMapUsers.end(); ++user ) {
-		goMapUserVector.push_back(GoMapUser(user->first,user->second));
-	}
-	goMapUserVector.sort();
-	printf( "name                          sets  edits (china sets/edits/percent) last date, last set\n");
-	for ( std::list<GoMapUser>::iterator user = goMapUserVector.begin(); user != goMapUserVector.end(); ++user ) {
-		if ( user->count.editCount > 0 ) {
-			printf( "%-30s %4ld %6ld (%6ld,%6ld, %f%%) %s %ld\n",
-				   user->name.c_str(),
-				   user->count.changesetCount,
-				   user->count.editCount,
-				   user->count.changesetInChinaCount, user->count.editInChinaCount, 100.0*user->count.editInChinaCount/user->count.editCount,
-				   user->count.date.c_str(), user->count.lastChangesetId );
+	for ( PerEditorMap::iterator it = perEditorMap.begin(); it != perEditorMap.end(); ++it ) {
+		const char * editorName = it->first.c_str();
+		PerEditorUserMap & perEditor = it->second;
+		printf( "\n");
+		printf( "%s users:\n", editorName);
+		struct PerEditorUser {
+			const std::string		name;
+			UserEditCount			count;
+			PerEditorUser( const std::string & name, UserEditCount count ) : name(name), count(count) {}
+			bool operator < (const PerEditorUser & other) const	{ return count.date < other.count.date;	}
+		};
+		std::list<PerEditorUser> perEditorUserVector;
+		long totalEdits = 0;
+		long totalChangesets = 0;
+		for ( PerEditorUserMap::iterator user = perEditor.begin(); user != perEditor.end(); ++user ) {
+			perEditorUserVector.push_back(PerEditorUser(user->first,user->second));
+			totalEdits += user->second.editCount;
+			totalChangesets += user->second.changesetCount;
+		}
+
+		perEditorUserVector.sort( [](PerEditorUser const& a, PerEditorUser const& b) { return a.count.editCount > b.count.editCount; });
+		while ( perEditorUserVector.size() > 100 ) {
+			perEditorUserVector.pop_back();
+		}
+		// add totals
+		perEditorUserVector.push_front(PerEditorUser("<Total>",UserEditCount(totalChangesets,totalEdits)));
+		perEditorUserVector.front().count.date = "          ";
+
+		printf( "   sets     edits        date        set\n");
+		for ( std::list<PerEditorUser>::iterator user = perEditorUserVector.begin(); user != perEditorUserVector.end(); ++user ) {
+			if ( user->count.editCount > 0 ) {
+				printf( "%7ld %9ld  %s  %9ld  %s\n",
+					   user->count.changesetCount,
+					   user->count.editCount,
+					   user->count.date.c_str(), user->count.lastChangesetId,
+					   user->name.c_str() );
+			}
 		}
 	}
 
