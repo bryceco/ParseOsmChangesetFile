@@ -7,392 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6D69E197-212B-4D89-983C-00555BB287E1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.532166"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3C6CCDDF-44C4-4C14-8BDC-04F15D8FCAB5"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.53292"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "330"
-            endingLineNumber = "330"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "63AB90B9-37D2-4BE4-A9E2-6599FE3061F8"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5335"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "451"
-            endingLineNumber = "451"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "218FE308-55C1-4AEE-BE67-45254C9F572D"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.533982"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "443"
-            endingLineNumber = "443"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1751C620-F0D1-444F-BE9A-92E8EEBCB9F3"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5344501"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A35F1962-D294-40C5-AE0C-38D38F134A11"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.534941"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "469"
-            endingLineNumber = "469"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1703CAF9-A093-44F5-AF7D-70FC8E1155D4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5354331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "562"
-            endingLineNumber = "562"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FCFD26E7-DB7D-4D4B-A422-83429A34EFE4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.535888"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "388"
-            endingLineNumber = "388"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E56FCD5B-CBBF-4C1C-927E-52A467387A65"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5369231"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EB706BD3-2757-478C-ADAC-5C3A474E82E0"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5380681"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4C147C7A-06FF-442B-BC8F-D0EF1731E81F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.538553"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "430"
-            endingLineNumber = "430"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D5B652CC-7A91-4523-92A7-F11DF4AA3CDE"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.539572"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4CEFF991-7382-483D-A140-F6BAF063C883"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.540058"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "operator()(a, b)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B154FBA2-5CEA-4DDA-8F91-0A27A36B428E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.540579"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "565"
-            endingLineNumber = "565"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.541092"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "564"
-            endingLineNumber = "564"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.486861"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "1355">
-               </Location>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.487217"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "3514">
-               </Location>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.48764"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "6523">
-               </Location>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.48797"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "13754">
-               </Location>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.488283"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "15484">
-               </Location>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.488616"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "19903">
-               </Location>
-               <Location
-                  uuid = "C68E3D98-1F11-4094-8169-453B56C61F2A - e17c804a0bdffb09"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  timestampString = "467361482.488922"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "446"
-                  endingLineNumber = "446"
-                  offsetFromSymbolStart = "24111">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AFCC822A-116F-45EE-AF1F-44D5FA185588"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5415421"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "563"
-            endingLineNumber = "563"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "C015DF46-3662-4CF7-9115-1F1F52ADEE38"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -401,26 +15,9 @@
             timestampString = "546572336.54202"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "595"
-            endingLineNumber = "595"
-            landmarkName = "main(argc, argv)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "22AC8216-8441-4E84-B0F6-CACD9EF5345E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.542459"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
-            landmarkName = "main(argc, argv)"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "FixEditorName(orig)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -435,77 +32,9 @@
             timestampString = "546572336.5428751"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "596"
-            endingLineNumber = "596"
-            landmarkName = "main(argc, argv)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6BA18309-388D-4107-88BE-56661B0370A2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.543354"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9F74705F-AB25-4D19-BFC4-ADC5BCFD0B86"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.543839"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E53A1A52-8323-4012-AE33-9082C3C5E362"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.5442981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4DEB3F0E-7BF1-41B7-B92A-51698A217164"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572336.544762"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "410"
-            endingLineNumber = "410"
-            landmarkName = "parseXml(s, startDate)"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "FixEditorName(orig)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -614,16 +143,173 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2FF14EC9-C4F3-41AA-93E9-B8D6A86DC41F"
+            uuid = "3F35D098-A133-4AC3-8F30-AA264BB3676C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572355.043872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "GreatCircleDistance(lon1, lat1, lon2, lat2)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "46F746E8-C204-46C1-BCB0-FD946D72DC04"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "GreatCircleDistance(lon1, lat1, lon2, lat2)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "46F746E8-C204-46C1-BCB0-FD946D72DC04 - b964b5f272e54a9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "parseXml(char const*, Substring)"
+                  moduleName = "ParseOsmChangesetFile"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "626">
+               </Location>
+               <Location
+                  uuid = "46F746E8-C204-46C1-BCB0-FD946D72DC04 - b964b5f272e54a9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "parseXml(char const*, Substring)"
+                  moduleName = "ParseOsmChangesetFile"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "1412">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E5EBDAD0-F5F2-4551-87C5-9010EF1D55DD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "FixEditorName(orig)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "E5EBDAD0-F5F2-4551-87C5-9010EF1D55DD - a4efac774e32b6bf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "parseXml(char const*, unsigned long, Substring)"
+                  moduleName = "ParseOsmChangesetFile"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "893">
+               </Location>
+               <Location
+                  uuid = "E5EBDAD0-F5F2-4551-87C5-9010EF1D55DD - a4efac774e32b6bf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "parseXml(char const*, unsigned long, Substring)"
+                  moduleName = "ParseOsmChangesetFile"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "1977">
+               </Location>
+               <Location
+                  uuid = "E5EBDAD0-F5F2-4551-87C5-9010EF1D55DD - 5421b46bd1c465ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "std::__1::pair&lt;std::__1::__hash_map_iterator&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;Substring, long&gt;, void*&gt;*&gt; &gt;, bool&gt; std::__1::unordered_map&lt;Substring, long, SubstringHash, std::__1::equal_to&lt;Substring&gt;, std::__1::allocator&lt;std::__1::pair&lt;Substring const, long&gt; &gt; &gt;::insert&lt;std::__1::pair&lt;Substring, long&gt;, void&gt;(std::__1::pair&lt;Substring, long&gt;&amp;&amp;)"
+                  moduleName = "ParseOsmChangesetFile"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "E5EBDAD0-F5F2-4551-87C5-9010EF1D55DD - 4c81567187e6f03e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;Substring, long&gt;, void*&gt;*&gt; std::__1::__hash_table&lt;std::__1::__hash_value_type&lt;Substring, long&gt;, std::__1::__unordered_map_hasher&lt;Substring, std::__1::__hash_value_type&lt;Substring, long&gt;, SubstringHash, true&gt;, std::__1::__unordered_map_equal&lt;Substring, std::__1::__hash_value_type&lt;Substring, long&gt;, std::__1::equal_to&lt;Substring&gt;, true&gt;, std::__1::allocator&lt;std::__1::__hash_value_type&lt;Substring, long&gt; &gt; &gt;::find&lt;Substring&gt;(Substring const&amp;)"
+                  moduleName = "ParseOsmChangesetFile"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "17">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "86063F50-E0B6-4806-BFBC-64289D72E2E9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "649"
+            endingLineNumber = "649"
+            landmarkName = "main(argc, argv)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CD02DD27-8013-47CD-B3FE-635E63FA9F2F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
             landmarkName = "parseXml(s, startDate)"
             landmarkType = "9">
          </BreakpointContent>
@@ -631,12 +317,43 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "12F41EFC-4220-49FF-B7E0-AF69FFF89163"
+            uuid = "AE7A288B-EBDE-4581-B32C-0AD50AD6A7AE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
-            timestampString = "546572371.662393"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4C6BA853-4722-4FDB-AEF4-C7BA62F542DF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8C6896EF-F93D-4082-9E1F-9E88E5808126"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "327"
@@ -648,15 +365,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2D423511-C463-4465-8EE3-7BC650345E24"
+            uuid = "26F76026-CEBB-4179-A4A4-768043E36C33"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "577"
-            endingLineNumber = "577"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DAA6EF1D-B1E0-490B-9796-7E0A6102A871"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6C00A13F-6C79-4B0E-95EE-061DA7A9F9D6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C98532C9-10C7-444A-AB81-695E36F3F460"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "GetOpeningBracket(s)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "780E5488-0F65-41A9-BCF9-ECBA450802FA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "615"
+            endingLineNumber = "615"
             landmarkName = "parsePath(path)"
             landmarkType = "9">
          </BreakpointContent>
@@ -664,15 +445,95 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9376857D-00BB-4568-BC7E-129EECFFE956"
+            uuid = "6C6C6BB5-4248-42FE-AA6A-999DFEC6F02A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "465"
+            endingLineNumber = "465"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D0F15647-6B39-4A1F-90F2-0A82B53A4CC3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "397"
+            endingLineNumber = "397"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0E870155-07F4-42DC-A6B2-5665BEE15DDC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "GetKeyValue(s, k, klen, v, vlen)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1C9DC04A-B1B8-4903-93B0-0C275E2D2B7C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8350CCE8-E394-4A02-9DB2-CE09E07E7F28"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseOsmChangesetFile/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
+            landmarkName = "parseXml(s, startDate)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "11672931-B1D3-4341-872D-C78913C34CD6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
             landmarkName = "parseXml(s, startDate)"
             landmarkType = "9">
          </BreakpointContent>
@@ -680,225 +541,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A4C55319-9099-4F59-A4F3-005C9D7D2AB5"
+            uuid = "A4C2F852-4D4F-43D2-9988-E647A89E6D7F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
-            landmarkName = "parseXml(s, startDate)"
+            startingLineNumber = "641"
+            endingLineNumber = "641"
+            landmarkName = "main(argc, argv)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6CE156B4-C6D2-45F3-B2EC-95968DBA664E"
+            uuid = "D64187AD-8547-48FB-8D24-19568CC162C2"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "456"
-            endingLineNumber = "456"
-            landmarkName = "parseXml(s, startDate)"
+            startingLineNumber = "620"
+            endingLineNumber = "620"
+            landmarkName = "parsePath(path)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AB10CD7F-177A-4219-831B-A337EBD7EF68"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "393"
-            endingLineNumber = "393"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B640C688-89E8-42B8-90B5-7F3F40BE2EDC"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "00B389AD-CAF6-42D6-927E-484C3CBD4B14"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "499"
-            endingLineNumber = "499"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E777B090-B75B-4B8A-AEBB-71D8048E169E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "518"
-            endingLineNumber = "518"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AE24590C-31BC-4617-BF00-91140B23F6AC"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "425"
-            endingLineNumber = "425"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5FC3A5D7-2742-44A7-BE27-977BDA090610"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "FixEditorName(orig)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "5FC3A5D7-2742-44A7-BE27-977BDA090610 - e17c804a0bdc2c36"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "51"
-                  endingLineNumber = "51"
-                  offsetFromSymbolStart = "732">
-               </Location>
-               <Location
-                  uuid = "5FC3A5D7-2742-44A7-BE27-977BDA090610 - 7d12ccb84bde4c28"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "parseXml(char const*, char const*) (.cold.1)"
-                  moduleName = "ParseOsmChangesetFile"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bryce/SourceCode/Desktop/ParseOsmChangesetFile/ParseOsmChangesetFile/main.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "51"
-                  endingLineNumber = "51"
-                  offsetFromSymbolStart = "14">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "ECCA4FD9-9157-4E4A-A840-2D41FA4519FC"
+            uuid = "29B9C354-A761-41DB-97D4-AA0C3AB099CE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseOsmChangesetFile/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "525"
-            endingLineNumber = "525"
-            landmarkName = "GoMapUser"
-            landmarkType = "14">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3E331D52-D23B-43C4-B925-E684D2D3C8D8"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "GreatCircleDistance(lon1, lat1, lon2, lat2)"
+            startingLineNumber = "621"
+            endingLineNumber = "621"
+            landmarkName = "parsePath(path)"
             landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "72F0031C-B987-4B85-ACAD-585497C6EFEB"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
-            landmarkName = "parseXml(s, startDate)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6F2D71C4-70C6-48FA-904C-83B3FD130D1D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseOsmChangesetFile/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "c_str()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
