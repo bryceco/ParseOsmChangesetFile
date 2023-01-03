@@ -51,6 +51,8 @@ static std::string FixEditorName( const std::string & orig )
 	static const std::string names[] = {
 		"ArcGIS",
 		"bulk_upload",
+		"Every Door Android",
+		"Every Door iOS",
 		"FindvejBot",
 		"Go Kaart!!",
 		"Go Map!!",
@@ -272,7 +274,7 @@ struct UserEditCount {
 };
 
 typedef std::pair<std::string,long> ChangesetCount;
-struct pred {
+struct predChangesetCount {
 	bool operator()(const ChangesetCount & a, const ChangesetCount & b) const
 	{
 		return a.second > b.second;
@@ -294,6 +296,9 @@ bool parseXml( const char * s, const char * startDate )
 
 	typedef std::map<std::string,long> ChangesetCommentMap;
 	ChangesetCommentMap changesetComments;
+
+	typedef std::map<std::string,long> StreetCompleteCommentMap;
+	StreetCompleteCommentMap streetCompleteComments;
 
 	const char *key, *val, *tag;
 	int klen, vlen, taglen;
@@ -344,6 +349,15 @@ bool parseXml( const char * s, const char * startDate )
 					comment.first->second++;
 				}
 
+				if ( changesetEditor == "StreetComplete" ) {
+					std::pair<StreetCompleteCommentMap::iterator,bool> scComment = streetCompleteComments.insert( std::pair<std::string,long>(changesetComment, 1) );
+					if ( scComment.second ) {
+						// didn't already exist
+					} else {
+						scComment.first->second++;
+					}
+				}
+
 				auto it = perEditorMap.find( changesetEditor );
 				if ( it != perEditorMap.end() ) {
 					PerEditorUserMap & perEditor = it->second;
@@ -385,7 +399,7 @@ bool parseXml( const char * s, const char * startDate )
 				} else if ( IsEqual( key, klen, "created_at" ) ) {
 					static std::string prev = "";
 					changesetDate = UnescapeString( val, 10 );
-					if ( prev.length() >= 4 && prev[3] != changesetDate[3] ) {
+					if ( prev.length() >= 4 && prev[3] != changesetDate[3] && changesetDate >= "2010" ) {
 						printf("%s\n",changesetDate.c_str());
 					}
 					prev = changesetDate;
@@ -547,13 +561,14 @@ bool parseXml( const char * s, const char * startDate )
 		perEditorUserVector.push_front(PerEditorUser("<Total>",UserEditCount(totalChangesets,totalEdits)));
 		perEditorUserVector.front().count.date = "          ";
 
-		printf( "   sets     edits        date        set\n");
+		printf( "   sets     edits        date          set\n");
 		for ( std::list<PerEditorUser>::iterator user = perEditorUserVector.begin(); user != perEditorUserVector.end(); ++user ) {
 			if ( user->count.editCount > 0 ) {
-				printf( "%7ld %9ld  %s  %9ld  %s\n",
+				printf( "%7ld %9ld  %s  %11ld  %s\n",
 					   user->count.changesetCount,
 					   user->count.editCount,
-					   user->count.date.c_str(), user->count.lastChangesetId,
+					   user->count.date.c_str(),
+					   user->count.lastChangesetId,
 					   user->name.c_str() );
 			}
 		}
@@ -576,6 +591,21 @@ bool parseXml( const char * s, const char * startDate )
 		printf("%9ld (%.6f) %s\n", c.second, percent, c.first.c_str());
 	}
 #endif
+
+	long scTotal = 0;
+	std::vector<std::pair<long,std::string>> scComments;
+	for ( StreetCompleteCommentMap::iterator c = streetCompleteComments.begin(); c!= streetCompleteComments.end(); ++c ) {
+		scComments.push_back(std::pair<long,std::string>(c->second,c->first));
+		scTotal += c->second;
+	}
+	std::sort( scComments.begin(), scComments.end() );
+	std::reverse( scComments.begin(), scComments.end() );
+	printf("");
+	printf("StreetComplete comments");
+	for ( auto c = scComments.begin(); c!= scComments.end(); ++c ) {
+		printf("%.6f%% %s\n", 100.0*c->first/scTotal, c->second.c_str());
+	}
+
 	return true;
 }
 
@@ -587,8 +617,10 @@ bool parsePath( const std::string & path )
 	}
 
 	int fd = open( path.c_str(), O_RDONLY );
-	if ( fd < 0 )
+	if ( fd < 0 ) {
+		perror("");
 		return false;
+	}
 	struct stat statbuf = { 0 };
 	fstat(fd,&statbuf);
 
