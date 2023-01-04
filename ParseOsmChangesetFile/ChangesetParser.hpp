@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <vector>
 
+// The data returned about each changeset
 class Changeset {
 public:
 	std::string date, user, application, comment;
@@ -20,6 +21,7 @@ public:
 	double min_lat, max_lat, min_lon, max_lon;
 };
 
+// Virtual class that defines the callbacks from the parser
 class ChangesetReader {
 public:
 	void virtual initialize() = 0;
@@ -27,11 +29,15 @@ public:
 	void virtual finalizeChangesets() = 0;
 };
 
+// The parser for changeset XML files
 class ChangesetParser {
+	enum ParseStatus { PARSE_SUCCESS, PARSE_ERROR, PARSE_FINISHED };
+	enum ParseStatus parseChangeset( const char * &s, Changeset & changeset );
 	std::vector<ChangesetReader *> readers;
 public:
 	void addReader(ChangesetReader * reader);
-	bool parseXml( const char * s, const char * startDate );
+	bool parseXmlString( const char * xml, const char * startDate );
+	bool parseXmlFile( std::string path, const char * startDate );
 };
 
 #endif /* parser_hpp */

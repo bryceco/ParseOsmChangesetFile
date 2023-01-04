@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		028C1BDD2963FD1C00D0A1FB /* ChangesetParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028C1BDB2963FD1C00D0A1FB /* ChangesetParser.cpp */; };
+		028C1BE92965FE7C00D0A1FB /* Readers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028C1BE72965FE7C00D0A1FB /* Readers.cpp */; };
 		02BE9D152093F8170001BD4D /* Countries.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02BE9D142093F8170001BD4D /* Countries.mm */; };
 		02BE9D18209403420001BD4D /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02BE9D17209403420001BD4D /* AppKit.framework */; };
 		02C75F361967185800B7AE08 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02C75F351967185800B7AE08 /* main.cpp */; };
@@ -28,6 +29,8 @@
 /* Begin PBXFileReference section */
 		028C1BDB2963FD1C00D0A1FB /* ChangesetParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ChangesetParser.cpp; sourceTree = "<group>"; };
 		028C1BDC2963FD1C00D0A1FB /* ChangesetParser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChangesetParser.hpp; sourceTree = "<group>"; };
+		028C1BE72965FE7C00D0A1FB /* Readers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Readers.cpp; sourceTree = "<group>"; };
+		028C1BE82965FE7C00D0A1FB /* Readers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Readers.hpp; sourceTree = "<group>"; };
 		02BE9D0F2093F65E0001BD4D /* countries.geojson */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = countries.geojson; sourceTree = "<group>"; };
 		02BE9D132093F8170001BD4D /* Countries.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Countries.h; sourceTree = "<group>"; };
 		02BE9D142093F8170001BD4D /* Countries.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Countries.mm; sourceTree = "<group>"; };
@@ -82,6 +85,8 @@
 				02BE9D0F2093F65E0001BD4D /* countries.geojson */,
 				028C1BDB2963FD1C00D0A1FB /* ChangesetParser.cpp */,
 				028C1BDC2963FD1C00D0A1FB /* ChangesetParser.hpp */,
+				028C1BE72965FE7C00D0A1FB /* Readers.cpp */,
+				028C1BE82965FE7C00D0A1FB /* Readers.hpp */,
 			);
 			path = ParseOsmChangesetFile;
 			sourceTree = "<group>";
@@ -145,6 +150,7 @@
 			files = (
 				02C75F361967185800B7AE08 /* main.cpp in Sources */,
 				028C1BDD2963FD1C00D0A1FB /* ChangesetParser.cpp in Sources */,
+				028C1BE92965FE7C00D0A1FB /* Readers.cpp in Sources */,
 				02BE9D152093F8170001BD4D /* Countries.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
