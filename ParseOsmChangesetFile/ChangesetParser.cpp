@@ -78,6 +78,7 @@ static bool IsIdent( char c )
 	return isalnum( c ) || c == '_' || c == '?';
 }
 
+// Parses a key: changeset
 static bool GetKey( const char *& s, const char *& k, int & klen )
 {
 	const char * p = s;
@@ -94,6 +95,7 @@ static bool GetKey( const char *& s, const char *& k, int & klen )
 	return true;
 }
 
+// Parses a quoted string: "JOSM 1.2"
 static bool GetValue( const char *& s, const char *& v, int & vlen )
 {
 	const char * p = s;
@@ -102,7 +104,7 @@ static bool GetValue( const char *& s, const char *& v, int & vlen )
 	if ( *p++ != '"' )
 		return false;
 	v = p;
-	while ( *p && *p != '"' )
+	while ( *p != '"' )
 		++p;
 	if ( *p == 0 )
 		return false;
@@ -113,7 +115,8 @@ static bool GetValue( const char *& s, const char *& v, int & vlen )
 	return true;
 }
 
-
+// Parses strings in the form:
+// 		k="created_by"
 static bool GetKeyValue( const char *& s, const char *& k, int & klen, const char *& v, int & vlen )
 {
 	const char * p = s;
@@ -168,22 +171,31 @@ static std::string UnescapeString( const char * s, int len )
 	}
 
 	std::string dst;
-	for ( int i = 0; i < len; ++i, ++s ) {
+	const char * end = s + len;
+	while ( s < end ) {
 		if ( *s == '&' ) {
 			if ( memcmp( s+1, "quot;", 5 ) == 0 ) {
 				dst += '"';
+				s += 5;
 			} else if ( memcmp( s+1, "apos;", 5) == 0 ) {
 				dst += '\'';
+				s += 5;
 			} else if ( memcmp( s+1, "lt;", 3) == 0 ) {
 				dst += '<';
+				s += 3;
 			} else if ( memcmp( s+1, "gt;", 3) == 0 ) {
 				dst += '>';
+				s += 3;
 			} else if ( memcmp( s+1, "amp;", 4) == 0 ) {
 				dst += '&';
+				s += 4;
+			} else {
+				dst += *s;
 			}
 		} else {
 			dst += *s;
 		}
+		++s;
 	}
 	return dst;
 }
@@ -280,36 +292,39 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 	if ( s[-2] == '/' )
 		return PARSE_SUCCESS;
 
+	// iterate over tags
 	for (;;) {
-		// iterate over tags
+		// <tag k="created_by" v="JOSM"/>
 		if ( !GetOpeningBracket( s ) )
 			return PARSE_ERROR;
 		if ( !GetKey( s, tag, taglen ) )
 			return PARSE_ERROR;
 
 		if ( IsEqual( tag, taglen, "tag" )) {
-			// iterate over key/values
-			if ( GetKeyValue( s, key, klen, val, vlen ) ) {
-				if ( IsEqual( key, klen, "k" ) && IsEqual( val, vlen, "created_by" )) {
-					if ( GetKeyValue( s, key, klen, val, vlen)) {
-						if ( IsEqual(key, klen, "v") ) {
-							changeset.application = FixEditorName( UnescapeString( val, vlen ) );
-						}
-					}
-				} else if ( IsEqual( key, klen, "k" ) && IsEqual( val, vlen, "comment" )) {
-					if ( GetKeyValue( s, key, klen, val, vlen)) {
-						if ( IsEqual(key, klen, "v") ) {
-							changeset.comment = UnescapeString( val, vlen );
-						}
+			if ( !GetKeyValue( s, key, klen, val, vlen ) )
+				return PARSE_ERROR;
+			if ( !IsEqual( key, klen, "k" ) )
+				return PARSE_ERROR;
+			if ( IsEqual( val, vlen, "created_by" )) {
+				if ( GetKeyValue( s, key, klen, val, vlen)) {
+					if ( IsEqual(key, klen, "v") ) {
+						changeset.application = FixEditorName( UnescapeString( val, vlen ) );
 					}
 				}
+			} else if ( IsEqual( val, vlen, "comment" )) {
+				if ( GetKeyValue( s, key, klen, val, vlen)) {
+					if ( IsEqual(key, klen, "v") ) {
+						changeset.comment = UnescapeString( val, vlen );
+					}
+				}
+			} else {
+				// some tag we don't care about, but we need to consume it's value:
+				// 		changesets_count, host, imagery_used, locale
+				GetKeyValue( s, key, klen, val, vlen );
 			}
-			while ( GetKeyValue( s, key, klen, val, vlen ) )
-				continue;
 			if ( !GetClosingBracket( s )) {
 				return PARSE_ERROR;
 			}
-
 		} else if ( IsEqual( tag, taglen, "/changeset" )) {
 			if ( !GetClosingBracket( s )) {
 				return PARSE_ERROR;
@@ -321,7 +336,12 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 	}
 }
 
-bool ChangesetParser::parseXmlString( const char * xml, const char * startDate )
+const char * ChangesetParser::searchForStartDate( const char * xml, const char * end, const char * startDate )
+{
+	return xml;
+}
+
+bool ChangesetParser::parseXmlString( const char * xml, long len, const char * startDate )
 {
 	// get xml initial header
 	const char * s = xml;
@@ -331,6 +351,10 @@ bool ChangesetParser::parseXmlString( const char * xml, const char * startDate )
 
 	for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
 		(*reader)->initialize();
+	}
+
+	if ( startDate && strlen(startDate) > 0 ) {
+		xml = searchForStartDate( xml, xml+len, startDate );
 	}
 
 	for (;;) {
@@ -375,9 +399,9 @@ bool ChangesetParser::parseXmlFile( std::string path, const char * startDate )
 	fstat(fd,&statbuf);
 
 	const void * mem = mmap(NULL, statbuf.st_size, PROT_READ, MAP_FILE|MAP_SHARED|MAP_NOCACHE, fd, 0);
-	madvise( (void*)mem, statbuf.st_size, MADV_SEQUENTIAL );	// 222 without
+	madvise( (void*)mem, statbuf.st_size, MADV_SEQUENTIAL );
 
-	bool ok = parseXmlString( (const char *)mem, startDate );
+	bool ok = parseXmlString( (const char *)mem, statbuf.st_size, startDate );
 
 	munmap( (void *)mem, statbuf.st_size);
 	return ok;

@@ -33,10 +33,11 @@ public:
 class ChangesetParser {
 	enum ParseStatus { PARSE_SUCCESS, PARSE_ERROR, PARSE_FINISHED };
 	enum ParseStatus parseChangeset( const char * &s, Changeset & changeset );
+	const char * searchForStartDate( const char * xml, const char * end, const char * startDate );
 	std::vector<ChangesetReader *> readers;
 public:
 	void addReader(ChangesetReader * reader);
-	bool parseXmlString( const char * xml, const char * startDate );
+	bool parseXmlString( const char * xml, long len, const char * startDate );
 	bool parseXmlFile( std::string path, const char * startDate );
 };
 

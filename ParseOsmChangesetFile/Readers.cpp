@@ -22,19 +22,6 @@
 #include "ChangesetParser.hpp"
 #include "Readers.hpp"
 
-double GreatCircleDistance(double lon1, double lat1, double lon2, double lat2)
-{
-	double EarthRadius = 6378137.0;
-
-	// haversine formula
-	double dlon = (lon2 - lon1) * M_PI / 180;
-	double dlat = (lat2 - lat1) * M_PI / 180;
-	double a = pow(sin(dlat / 2), 2) + cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * pow(sin(dlon / 2), 2);
-	double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-	double meters = EarthRadius * c;
-	return meters;
-}
-
 class EditorInfoReader: public ChangesetReader {
 	struct EditorInfo {
 		long					changesets;
@@ -137,6 +124,19 @@ class LargeAreaReader: public ChangesetReader {
 			long rate = editor->second;
 			printf( "%-30s %6ld\n", editor->first.c_str(), rate );
 		}
+	}
+	
+	double GreatCircleDistance(double lon1, double lat1, double lon2, double lat2)
+	{
+		double EarthRadius = 6378137.0;
+
+		// haversine formula
+		double dlon = (lon2 - lon1) * M_PI / 180;
+		double dlat = (lat2 - lat1) * M_PI / 180;
+		double a = pow(sin(dlat / 2), 2) + cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * pow(sin(dlon / 2), 2);
+		double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+		double meters = EarthRadius * c;
+		return meters;
 	}
 };
 
