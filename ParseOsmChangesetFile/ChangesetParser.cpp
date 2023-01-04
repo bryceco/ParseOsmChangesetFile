@@ -33,6 +33,7 @@ static std::string FixEditorName( const std::string & orig )
 		 "Mapzen",
 		 "Merkaartor",
 		 "mumpot",
+		 "noteSolver_plugin",
 		 "nsr2osm",
 		 "OMaps",
 		 "OpeningHoursFixer",
@@ -214,6 +215,10 @@ static std::string FixEditorName( const std::string & orig )
 	 return true;
 }
 
+void ChangesetParser::addReader(ChangesetReader * reader)
+{
+	readers.push_back(reader);
+}
 
 bool ChangesetParser::parseXml( const char * s, const char * startDate )
 {
@@ -227,6 +232,10 @@ bool ChangesetParser::parseXml( const char * s, const char * startDate )
 
 	Changeset changeset;
 
+	for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
+		(*reader)->initialize();
+	}
+
 	for (;;) {
 		// iterate over changesets
 		if ( !GetOpeningBracket( s ) )
@@ -238,24 +247,28 @@ bool ChangesetParser::parseXml( const char * s, const char * startDate )
 		if ( IsEqual( tag, taglen, "changeset" ) ) {
 
 			// save prevoius accumulated changeset info
-			this->callback( changeset );
+			if ( changeset.date >= startDate ) {
+				for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
+					(*reader)->handleChangeset( changeset );
+				}
+			}
 			changeset.min_lat = changeset.max_lat = changeset.min_lon = changeset.max_lon = 0;
-			changeset.changesetDate = "";
-			changeset.changesetUser = "";
-			changeset.changesetEditor = "";
-			changeset.changesetComment = "";
-			changeset.changesetId = 0;
+			changeset.date = "";
+			changeset.user = "";
+			changeset.application = "";
+			changeset.comment = "";
+			changeset.ident = 0;
 			changeset.uid = 0;
 			changeset.editCount = 0;
 
 			// iterate over key/values
 			while ( GetKeyValue( s, key, klen, val, vlen ) ) {
 				if ( IsEqual( key, klen, "id" ) ) {
-					changeset.changesetId = atol( val );
+					changeset.ident = atol( val );
 				} else if ( IsEqual( key, klen, "created_at" ) ) {
-					changeset.changesetDate = UnescapeString( val, 10 );
+					changeset.date = UnescapeString( val, 10 );
 				} else if ( IsEqual( key, klen, "user" ) ) {
-					changeset.changesetUser = UnescapeString( val, vlen );
+					changeset.user = UnescapeString( val, vlen );
 				} else if ( IsEqual( key, klen, "uid" ) ) {
 					changeset.uid = atoi( val );
 				} else if ( IsEqual( key, klen, "num_changes" ) ) {
@@ -281,13 +294,13 @@ bool ChangesetParser::parseXml( const char * s, const char * startDate )
 				if ( IsEqual( key, klen, "k" ) && IsEqual( val, vlen, "created_by" )) {
 					if ( GetKeyValue( s, key, klen, val, vlen)) {
 						if ( IsEqual(key, klen, "v") ) {
-							changeset.changesetEditor = FixEditorName( UnescapeString( val, vlen ) );
+							changeset.application = FixEditorName( UnescapeString( val, vlen ) );
 						}
 					}
 				} else if ( IsEqual( key, klen, "k" ) && IsEqual( val, vlen, "comment" )) {
 					if ( GetKeyValue( s, key, klen, val, vlen)) {
 						if ( IsEqual(key, klen, "v") ) {
-							changeset.changesetComment = UnescapeString( val, vlen );
+							changeset.comment = UnescapeString( val, vlen );
 						}
 					}
 				}
@@ -311,5 +324,16 @@ bool ChangesetParser::parseXml( const char * s, const char * startDate )
 			return false;
 		}
 	}
+
+	if ( changeset.date >= startDate ) {
+		for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
+			(*reader)->handleChangeset( changeset );
+		}
+	}
+
+	for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
+		(*reader)->finalizeChangesets();
+	}
+
 	return true;
 };

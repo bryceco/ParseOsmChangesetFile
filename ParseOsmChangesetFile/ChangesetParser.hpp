@@ -10,21 +10,27 @@
 #define parser_hpp
 
 #include <stdio.h>
+#include <vector>
 
 class Changeset {
 public:
-	std::string changesetDate, changesetUser, changesetEditor, changesetComment;
-	long changesetId;
+	std::string date, user, application, comment;
+	long ident;
 	int uid, editCount;
 	double min_lat, max_lat, min_lon, max_lon;
 };
 
-class ChangesetParser {
-
+class ChangesetReader {
 public:
-	typedef std::function<void (const Changeset &)> ChangesetCallback;
-	ChangesetCallback callback;
+	void virtual initialize() = 0;
+	void virtual handleChangeset(const Changeset &) = 0;
+	void virtual finalizeChangesets() = 0;
+};
 
+class ChangesetParser {
+	std::vector<ChangesetReader *> readers;
+public:
+	void addReader(ChangesetReader * reader);
 	bool parseXml( const char * s, const char * startDate );
 };
 
