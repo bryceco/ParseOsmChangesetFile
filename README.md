@@ -46,7 +46,7 @@ class UserEditCount: public ChangesetReader {
 	}
 };
 ~~~
-and here's the main function that process analyze everything after Jan 1, 2021:
+and here's the main function that processes and analyzes everything after Jan 1, 2021:
 ~~~
 int main(int argc, const char * argv[])
 {
