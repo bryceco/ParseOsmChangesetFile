@@ -25,8 +25,8 @@ public:
 class ChangesetReader {
 public:
 	void virtual initialize() = 0;
-	void virtual handleChangeset(const Changeset &) = 0;
-	void virtual finalizeChangesets() = 0;
+	void virtual process(const Changeset &) = 0;
+	void virtual finalize() = 0;
 };
 
 // The parser for changeset XML files

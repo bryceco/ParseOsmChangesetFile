@@ -393,7 +393,7 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, const char * s
 		if ( status == PARSE_SUCCESS ) {
 			if ( changeset.date >= startDate ) {
 				for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
-					(*reader)->handleChangeset( changeset );
+					(*reader)->process( changeset );
 				}
 			}
 		} else if ( status == PARSE_FINISHED ) {
@@ -404,7 +404,7 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, const char * s
 	}
 
 	for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
-		(*reader)->finalizeChangesets();
+		(*reader)->finalize();
 	}
 
 	return true;

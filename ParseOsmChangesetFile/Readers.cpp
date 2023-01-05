@@ -38,7 +38,7 @@ class EditorInfoReader: public ChangesetReader {
 	void initialize() {
 	}
 
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		if ( changeset.date != prevDate ) {
 			prevDate = changeset.date;
@@ -60,7 +60,7 @@ class EditorInfoReader: public ChangesetReader {
 		e.changesets += 1;
 	}
 
-	void finalizeChangesets()
+	void finalize()
 	{
 		// print average number of daily users for each editor
 		printf("\n");
@@ -105,7 +105,7 @@ class LargeAreaReader: public ChangesetReader {
 	LargeAreaMap	largeAreaMap;
 
 	void initialize() {}
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		if ( GreatCircleDistance(changeset.min_lon, changeset.min_lat, changeset.max_lon, changeset.max_lat) > 1000*1000.0 ) {
 			std::pair<LargeAreaMap::iterator,bool> result = largeAreaMap.insert(std::pair<std::string,long>(changeset.application,1));
@@ -115,7 +115,7 @@ class LargeAreaReader: public ChangesetReader {
 		}
 	}
 
-	void finalizeChangesets()
+	void finalize()
 	{
 		// print large edit area counts
 		printf("\n");
@@ -145,11 +145,9 @@ class EditsPerUserReader: public ChangesetReader {
 	struct UserEditCount {
 		long			changesetCount;
 		long			editCount;
-		long			changesetInChinaCount;
-		long			editInChinaCount;
 		std::string		lastDate;
 		long			lastChangesetId;
-		UserEditCount() : editCount(0), changesetCount(0), changesetInChinaCount(0), editInChinaCount(0) {}
+		UserEditCount() : editCount(0), changesetCount(0) {}
 	};
 	typedef std::map<std::string,UserEditCount>	PerEditorUserMap;	// map user-name to edit stats
 
@@ -163,12 +161,11 @@ class EditsPerUserReader: public ChangesetReader {
 		perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("MapComplete",PerEditorUserMap()));
 	}
 
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		auto it = perEditorMap.find( changeset.application );
 		if ( it != perEditorMap.end() ) {
 			PerEditorUserMap & perEditor = it->second;
-
 
 			auto it = perEditor.find(changeset.application);
 			if ( it == perEditor.end() ) {
@@ -179,22 +176,10 @@ class EditsPerUserReader: public ChangesetReader {
 			editsForUser.editCount		+= changeset.editCount;
 			editsForUser.lastDate		 = changeset.date;
 			editsForUser.lastChangesetId = changeset.ident;
-
-#if 0
-			if ( CountryContainsPoint( "China", min_lon, min_lat ) &&
-				CountryContainsPoint( "China", min_lon, max_lat ) &&
-				CountryContainsPoint( "China", max_lon, min_lat ) &&
-				CountryContainsPoint( "China", max_lon, max_lat ) )
-			{
-				printf( "China: %s %ld: %s -- %f, %f, %f, %f\n", changesetUser.c_str(), changesetId, changesetDate.c_str(), min_lat, max_lat, min_lon, max_lon );
-				editsForUser.editInChinaCount += editCount;
-				editsForUser.changesetInChinaCount += 1;
-			}
-#endif
 		}
 	}
 
-	void finalizeChangesets()
+	void finalize()
 	{
 		const int TOP_COUNT = 20;
 
@@ -243,22 +228,81 @@ class EditsPerUserReader: public ChangesetReader {
 };
 
 
+class GoMapInCountryReader: public ChangesetReader {
+	const char * COUNTRY = "China";
+	struct User {
+		long	changesets;
+		long	edits;
+	};
+	std::map<std::string,User>	users;
+	void initialize() {}
+
+	void process(const Changeset & changeset)
+	{
+		if ( changeset.application != "Go Map!!" )
+			return;
+		if ( CountryContainsPoint( COUNTRY, changeset.min_lon, changeset.min_lat ) &&
+			CountryContainsPoint( COUNTRY, changeset.min_lon, changeset.max_lat ) &&
+			CountryContainsPoint( COUNTRY, changeset.max_lon, changeset.min_lat ) &&
+			CountryContainsPoint( COUNTRY, changeset.max_lon, changeset.max_lat ) )
+		{
+			auto it = users.find(changeset.user);
+			if ( it == users.end() )
+				it = users.insert(std::pair<std::string,User>(changeset.user,User())).first;
+			it->second.edits += changeset.editCount;
+			it->second.changesets += 1;
+		}
+	}
+
+	void finalize()
+	{
+		struct UserInfo {
+			long			edits;
+			long			changesets;
+			std::string		user;
+			bool operator < (const UserInfo & other) const	{ return edits < other.edits;	}
+		};
+		std::vector<UserInfo>	list;
+
+		for ( const auto &it: users ) {
+			UserInfo info = {
+				it.second.edits,
+				it.second.changesets,
+				it.first
+			};
+			list.push_back(info);
+		}
+		std::sort( list.begin(), list.end() );
+		std::reverse( list.begin(), list.end() );
+
+		printf( "\n");
+		printf( "Top editors in %s:\n", COUNTRY);
+		printf( "    edits    changesets    user\n");
+		for ( const auto &user: list ) {
+			printf( "%9ld   %7ld   %s\n",
+				   user.edits, user.changesets, user.user.c_str());
+		}
+	}
+};
+
+
+// Shows which locale changesets are using
 class GoMapLocaleReader: public ChangesetReader {
 	std::map<std::string,long>	locales;
 
 	void initialize() {}
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		if ( changeset.application == "Go Map!!" ) {
 			auto it = locales.find(changeset.locale);
 			if ( it == locales.end() ) {
-				it = locales.insert( std::pair<std::string,long>(changeset.comment, 0) ).first;
+				it = locales.insert( std::pair<std::string,long>(changeset.locale, 0) ).first;
 			}
 			++it->second;
 		}
 	}
 
-	void finalizeChangesets()
+	void finalize()
 	{
 		std::vector<std::pair<long, std::string>> list;
 		for ( const auto &loc: locales ) {
@@ -282,7 +326,7 @@ class ChangesetCommentReader: public ChangesetReader {
 	ChangesetCommentMap comments;
 
 	void initialize() {}
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		auto it = comments.find(changeset.application);
 		if ( it == comments.end() ) {
@@ -291,7 +335,7 @@ class ChangesetCommentReader: public ChangesetReader {
 		it->second++;
 	}
 
-	void finalizeChangesets()
+	void finalize()
 	{
 		// print changeset comments
 		typedef std::pair<long,std::string> Entry;
@@ -317,14 +361,14 @@ class DatePrinterReader: public ChangesetReader {
 	std::string prev = "";
 
 	void initialize() {}
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		if ( prev.length() == 0 || (prev[3] != changeset.date[3] && changeset.date >= "2010") ) {
 			printf("%s\n",changeset.date.c_str());
 		}
 		prev = changeset.date;
 	}
-	void finalizeChangesets()
+	void finalize()
 	{
 	}
 };
@@ -334,7 +378,7 @@ class StreetCompleteCommentReader: public ChangesetReader {
 	std::map<std::string,long>	comments;
 
 	void initialize() {}
-	void handleChangeset(const Changeset & changeset)
+	void process(const Changeset & changeset)
 	{
 		if ( changeset.application == "StreetComplete" ) {
 			auto it = comments.find(changeset.application);
@@ -345,7 +389,7 @@ class StreetCompleteCommentReader: public ChangesetReader {
 		}
 	}
 
-	void finalizeChangesets()
+	void finalize()
 	{
 		long total = 0;
 		std::vector<std::pair<long,std::string>> scComments;
@@ -378,5 +422,6 @@ std::vector<ChangesetReader *> getReaders()
 	readers.push_back(new ChangesetCommentReader());
 	readers.push_back(new StreetCompleteCommentReader());
 	readers.push_back(new GoMapLocaleReader());
+	readers.push_back(new GoMapInCountryReader());
 	return readers;
 }
