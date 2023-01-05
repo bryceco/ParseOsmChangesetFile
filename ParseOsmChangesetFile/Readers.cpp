@@ -196,12 +196,14 @@ class EditsPerUserReader: public ChangesetReader {
 
 	void finalizeChangesets()
 	{
+		const int TOP_COUNT = 20;
+
 		// print number of edits each user of Go Map made
 		for ( const auto &it: perEditorMap ) {
 			const char * editorName = it.first.c_str();
 			const PerEditorUserMap & perEditor = it.second;
 			printf( "\n");
-			printf( "%s most prolific users:\n", editorName);
+			printf( "%s top %d prolific users:\n", editorName, TOP_COUNT);
 			struct PerEditorUser {
 				const std::string		name;
 				UserEditCount			count;
@@ -218,19 +220,19 @@ class EditsPerUserReader: public ChangesetReader {
 			}
 
 			perEditorUserVector.sort( [](PerEditorUser const& a, PerEditorUser const& b) { return a.count.editCount > b.count.editCount; });
-			while ( perEditorUserVector.size() > 100 ) {
+			while ( perEditorUserVector.size() > TOP_COUNT ) {
 				perEditorUserVector.pop_back();
 			}
 			// add totals
 			perEditorUserVector.push_front(PerEditorUser("<Total>",UserEditCount()));
 			perEditorUserVector.front().count.lastDate = "          ";
 
-			printf( "   sets     edits  most recent     last set\n");
+			printf( "    edits    sets  most recent     last set   user\n");
 			for ( const auto &user: perEditorUserVector ) {
 				if ( user.count.editCount > 0 ) {
-					printf( "%7ld %9ld   %s  %11ld  %s\n",
-						   user.count.changesetCount,
+					printf( "%9ld %7ld   %s  %11ld   %s\n",
 						   user.count.editCount,
+						   user.count.changesetCount,
 						   user.count.lastDate.c_str(),
 						   user.count.lastChangesetId,
 						   user.name.c_str() );
@@ -241,15 +243,34 @@ class EditsPerUserReader: public ChangesetReader {
 };
 
 
-class GoMapReader: public ChangesetReader {
+class GoMapLocaleReader: public ChangesetReader {
+	std::map<std::string,long>	locales;
 
 	void initialize() {}
 	void handleChangeset(const Changeset & changeset)
 	{
+		if ( changeset.application == "Go Map!!" ) {
+			auto it = locales.find(changeset.locale);
+			if ( it == locales.end() ) {
+				it = locales.insert( std::pair<std::string,long>(changeset.comment, 0) ).first;
+			}
+			++it->second;
+		}
 	}
 
 	void finalizeChangesets()
 	{
+		std::vector<std::pair<long, std::string>> list;
+		for ( const auto &loc: locales ) {
+			list.push_back(std::pair<long, std::string>(loc.second,loc.first));
+		}
+		std::sort(list.begin(),list.end());
+		std::reverse(list.begin(),list.end());
+		printf("\n");
+		printf("Most common locales in Go Map!!\n");
+		for ( const auto &loc: list ) {
+			printf("%-9ld  %s\n", loc.first, loc.second.c_str());
+		}
 	}
 };
 
@@ -298,7 +319,7 @@ class DatePrinterReader: public ChangesetReader {
 	void initialize() {}
 	void handleChangeset(const Changeset & changeset)
 	{
-		if ( prev.length() >= 4 && prev[3] != changeset.date[3] && changeset.date >= "2010" ) {
+		if ( prev.length() == 0 || (prev[3] != changeset.date[3] && changeset.date >= "2010") ) {
 			printf("%s\n",changeset.date.c_str());
 		}
 		prev = changeset.date;
@@ -356,5 +377,6 @@ std::vector<ChangesetReader *> getReaders()
 	readers.push_back(new EditsPerUserReader());
 	readers.push_back(new ChangesetCommentReader());
 	readers.push_back(new StreetCompleteCommentReader());
+	readers.push_back(new GoMapLocaleReader());
 	return readers;
 }

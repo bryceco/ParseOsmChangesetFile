@@ -317,6 +317,12 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 						changeset.comment = UnescapeString( val, vlen );
 					}
 				}
+			} else if ( IsEqual( val, vlen, "locale" )) {
+				if ( GetKeyValue( s, key, klen, val, vlen)) {
+					if ( IsEqual(key, klen, "v") ) {
+						changeset.locale = UnescapeString( val, vlen );
+					}
+				}
 			} else {
 				// some tag we don't care about, but we need to consume it's value:
 				// 		changesets_count, host, imagery_used, locale
@@ -336,9 +342,32 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 	}
 }
 
-const char * ChangesetParser::searchForStartDate( const char * xml, const char * end, const char * startDate )
+// binary search for first changeset for startDate
+const char * ChangesetParser::searchForStartDate( const char * start, const char * end,
+												 const char * targetDate )
 {
-	return xml;
+	// pick midpoint
+	const char * mid = start + (end - start)/2;
+	// scan forward for changeset
+	const char * key = "<changeset ";
+	size_t keylen = strlen(key);
+	while ( mid+keylen < end && memcmp(mid,key,keylen)!=0 ) {
+		++mid;
+	}
+	if ( mid+keylen >= end )
+		return start;
+	// get the changeset at the midpoint
+	Changeset cs;
+	const char * tmpMid = mid;
+	if ( parseChangeset(tmpMid, cs) != PARSE_SUCCESS ) {
+		// give up
+		return start;
+	}
+	if ( cs.date < targetDate ) {
+		return searchForStartDate(mid, end, targetDate);
+	} else {
+		return searchForStartDate(start, mid, targetDate);
+	}
 }
 
 bool ChangesetParser::parseXmlString( const char * xml, long len, const char * startDate )
@@ -353,8 +382,9 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, const char * s
 		(*reader)->initialize();
 	}
 
+	// if a start date is defined then binary search for the changeset at or before it
 	if ( startDate && strlen(startDate) > 0 ) {
-		xml = searchForStartDate( xml, xml+len, startDate );
+		s = searchForStartDate( s, xml+len, startDate );
 	}
 
 	for (;;) {
