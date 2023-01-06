@@ -106,8 +106,6 @@ static bool GetValue( const char *& s, const char *& v, int & vlen )
 	v = p;
 	while ( *p != '"' )
 		++p;
-	if ( *p == 0 )
-		return false;
 	vlen = (int)(p - v);
 	++p; // closing quote
 
@@ -152,7 +150,7 @@ static bool GetClosingBracket( const char *& s )
 {
 	while ( isspace( *s ) )
 		++s;
-	if ( (s[0] == '?' || s[0] == '/') && s[1] == '>' ) {
+	if ( (s[0] == '/' || s[0] == '?') && s[1] == '>' ) {
 		s += 2;
 		return true;
 	}
@@ -227,18 +225,12 @@ bool IgnoreTag( const char *&s2, const char * tag )
 	return true;
 }
 
-void ChangesetParser::addReader(ChangesetReader * reader)
-{
-	readers.push_back(reader);
-}
-
-
 ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, Changeset & changeset )
 {
 	const char *key, *val, *tag;
 	int klen, vlen, taglen;
 
-	changeset.min_lat = changeset.max_lat = changeset.min_lon = changeset.max_lon = 0;
+	changeset.min_lat = changeset.max_lat = changeset.min_lon = changeset.max_lon = 0.0;
 	changeset.date = "";
 	changeset.user = "";
 	changeset.application = "";
@@ -344,7 +336,7 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 
 // binary search for first changeset for startDate
 const char * ChangesetParser::searchForStartDate( const char * start, const char * end,
-												 const char * targetDate )
+												 std::string targetDate )
 {
 	// pick midpoint
 	const char * mid = start + (end - start)/2;
@@ -370,7 +362,7 @@ const char * ChangesetParser::searchForStartDate( const char * start, const char
 	}
 }
 
-bool ChangesetParser::parseXmlString( const char * xml, long len, const char * startDate )
+bool ChangesetParser::parseXmlString( const char * xml, long len, std::string startDate )
 {
 	// get xml initial header
 	const char * s = xml;
@@ -378,15 +370,16 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, const char * s
 	IgnoreTag( s, "osm" );
 	IgnoreTag( s, "bound" );
 
-	for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
-		(*reader)->initialize();
+	for ( auto reader: readers ) {
+		reader->initialize();
 	}
 
 	// if a start date is defined then binary search for the changeset at or before it
-	if ( startDate && strlen(startDate) > 0 ) {
+	if ( startDate.size() > 0 ) {
 		s = searchForStartDate( s, xml+len, startDate );
 	}
 
+	// iterate over all changesets
 	for (;;) {
 		Changeset changeset;
 		auto status = parseChangeset(s, changeset);
@@ -403,18 +396,23 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, const char * s
 		}
 	}
 
-	for ( auto reader = readers.begin(); reader != readers.end(); ++reader ) {
-		(*reader)->finalize();
+	for ( auto reader: readers ) {
+		reader->finalize();
 	}
 
 	return true;
 };
 
+void ChangesetParser::addReader(ChangesetReader * reader)
+{
+	readers.push_back(reader);
+}
+
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 
-bool ChangesetParser::parseXmlFile( std::string path, const char * startDate )
+bool ChangesetParser::parseXmlFile( std::string path, std::string startDate )
 {
 	if ( path.compare(path.length()-4, 4, ".bz2") == 0 ) {
 		return false;

@@ -8,6 +8,8 @@
 
 #include "CountryJson.hpp"
 
+// This should be in a text file but makes it annoying for a command line app
+
 const char * countryJson = 
 "{\n"
 "\"type\": \"FeatureCollection\",\n"

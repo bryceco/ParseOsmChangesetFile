@@ -37,15 +37,14 @@ bool parseFile( const char * path, const char * startDate )
 
 int main(int argc, const char * argv[])
 {
-	const char * startDate = "2021-01-01";
-	double time = timestamp();
 	const char * path;
-	
 	if ( argc == 2 ) {
 		path = argv[1];
 	} else {
 		path = "/tmp/cs.osm";
 	}
+	const char * startDate = "2021-01-01";
+	double time = timestamp();
 	parseFile( path, startDate );
 	time = timestamp() - time;
 	printf( "total time = %f\n", time);
