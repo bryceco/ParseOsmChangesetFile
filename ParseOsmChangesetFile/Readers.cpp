@@ -22,7 +22,7 @@
 #include "ChangesetParser.hpp"
 #include "Readers.hpp"
 
-class EditorInfoReader: public ChangesetReader {
+class EditorDailyUsersReader: public ChangesetReader {
 	struct EditorInfo {
 		long					changesets;
 		long					edits;
@@ -62,17 +62,15 @@ class EditorInfoReader: public ChangesetReader {
 
 	void finalize()
 	{
-		// print average number of daily users for each editor
+		// print average number of unique daily users for each editor
 		printf("\n");
-		printf( "Average daily users for editors:\n");
+		printf( "Average daily users and edits/user:\n");
 
 		struct stats {
 			double user_rate;
 			double edit_rate;
 			std::string	editor;
-			bool operator<(const stats& a) const {
-				return user_rate < a.user_rate;
-			}
+			bool operator<(const stats & a) const { return user_rate < a.user_rate; }
 		};
 
 		std::vector<stats>	list;
@@ -80,8 +78,8 @@ class EditorInfoReader: public ChangesetReader {
 			const auto &editor = editor_pair.second;
 			stats s = {
 				(double)editor.uniqueUsersPerDaySum / dateCount,
-				editor.edits / (double)editor.uniqueUsersPerDaySum / dateCount,
-				editor_pair.first.c_str()
+				editor.edits / (double)editor.uniqueUsersPerDaySum,
+				editor_pair.first
 			};
 			list.push_back(s);
 		}
@@ -90,10 +88,10 @@ class EditorInfoReader: public ChangesetReader {
 
 		for ( const auto &item: list ) {
 			if ( item.user_rate > 0.1 ) {
-				printf( "%-30s %6.1f %12.1f\n",
-					   item.editor.c_str(),
+				printf( "%6.1f %12.1f  %s\n",
 					   item.user_rate,
-					   item.edit_rate );
+					   item.edit_rate,
+					   item.editor.c_str() );
 			}
 		}
 	}
@@ -141,41 +139,40 @@ class LargeAreaReader: public ChangesetReader {
 };
 
 
-class EditsPerUserReader: public ChangesetReader {
-	struct UserEditCount {
+class BiggestMappersByApp: public ChangesetReader {
+	struct UserStats {
 		long			changesetCount;
 		long			editCount;
 		std::string		lastDate;
 		long			lastChangesetId;
-		UserEditCount() : editCount(0), changesetCount(0) {}
+		UserStats() : editCount(0), changesetCount(0) {}
 	};
-	typedef std::map<std::string,UserEditCount>	PerEditorUserMap;	// map user-name to edit stats
-
-	typedef std::map<std::string,PerEditorUserMap> PerEditorMap; // map editor name to stats
-	PerEditorMap perEditorMap;
+	typedef std::map<std::string,UserStats>	PerUserMap;	// map user-name to edit stats
+	typedef std::map<std::string,PerUserMap> PerAppMap; // map editor name to stats
+	PerAppMap perAppMap;
 
 	void initialize() {
-		perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("Go Map!!",PerEditorUserMap()));
-		perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("Vespucci",PerEditorUserMap()));
-		perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("StreetComplete",PerEditorUserMap()));
-		perEditorMap.insert(std::pair<std::string,PerEditorUserMap>("MapComplete",PerEditorUserMap()));
+		perAppMap.insert(std::pair<std::string,PerUserMap>("Go Map!!",PerUserMap()));
+		perAppMap.insert(std::pair<std::string,PerUserMap>("Vespucci",PerUserMap()));
+		perAppMap.insert(std::pair<std::string,PerUserMap>("StreetComplete",PerUserMap()));
+		perAppMap.insert(std::pair<std::string,PerUserMap>("MapComplete",PerUserMap()));
 	}
 
 	void process(const Changeset & changeset)
 	{
-		auto it = perEditorMap.find( changeset.application );
-		if ( it != perEditorMap.end() ) {
-			PerEditorUserMap & perEditor = it->second;
+		auto it = perAppMap.find( changeset.application );
+		if ( it != perAppMap.end() ) {
+			PerUserMap & userMap = it->second;
 
-			auto it = perEditor.find(changeset.application);
-			if ( it == perEditor.end() ) {
-				it = perEditor.insert( std::pair<std::string,UserEditCount>(changeset.user,UserEditCount()) ).first;
+			auto it = userMap.find(changeset.application);
+			if ( it == userMap.end() ) {
+				it = userMap.insert( std::pair<std::string,UserStats>(changeset.user,UserStats()) ).first;
 			}
-			UserEditCount & editsForUser = it->second;
-			editsForUser.changesetCount	+= 1;
-			editsForUser.editCount		+= changeset.editCount;
-			editsForUser.lastDate		 = changeset.date;
-			editsForUser.lastChangesetId = changeset.ident;
+			UserStats & userStats = it->second;
+			userStats.changesetCount	+= 1;
+			userStats.editCount			+= changeset.editCount;
+			userStats.lastDate			= changeset.date;
+			userStats.lastChangesetId = changeset.ident;
 		}
 	}
 
@@ -184,21 +181,21 @@ class EditsPerUserReader: public ChangesetReader {
 		const int TOP_COUNT = 20;
 
 		// print number of edits each user of Go Map made
-		for ( const auto &it: perEditorMap ) {
+		for ( const auto &it: perAppMap ) {
 			const char * editorName = it.first.c_str();
-			const PerEditorUserMap & perEditor = it.second;
+			const PerUserMap & perUserMap = it.second;
 			printf( "\n");
 			printf( "%s top %d prolific users:\n", editorName, TOP_COUNT);
 			struct PerEditorUser {
-				const std::string		name;
-				UserEditCount			count;
-				PerEditorUser( const std::string & name, UserEditCount count ) : name(name), count(count) {}
+				const std::string	name;
+				UserStats			count;
+				PerEditorUser( const std::string & name, UserStats count ) : name(name), count(count) {}
 				bool operator < (const PerEditorUser & other) const	{ return count.lastDate < other.count.lastDate;	}
 			};
 			std::list<PerEditorUser> perEditorUserVector;
 			long totalEdits = 0;
 			long totalChangesets = 0;
-			for ( const auto &user: perEditor ) {
+			for ( const auto &user: perUserMap ) {
 				perEditorUserVector.push_back(PerEditorUser(user.first,user.second));
 				totalEdits += user.second.editCount;
 				totalChangesets += user.second.changesetCount;
@@ -209,7 +206,7 @@ class EditsPerUserReader: public ChangesetReader {
 				perEditorUserVector.pop_back();
 			}
 			// add totals
-			perEditorUserVector.push_front(PerEditorUser("<Total>",UserEditCount()));
+			perEditorUserVector.push_front(PerEditorUser("<Total>",UserStats()));
 			perEditorUserVector.front().count.lastDate = "          ";
 
 			printf( "    edits    sets  most recent     last set   user\n");
@@ -313,11 +310,53 @@ class GoMapLocaleReader: public ChangesetReader {
 		printf("\n");
 		printf("Most common locales in Go Map!!\n");
 		for ( const auto &loc: list ) {
-			printf("%-9ld  %s\n", loc.first, loc.second.c_str());
+			printf("%9ld  %s\n", loc.first, loc.second.c_str());
 		}
 	}
 };
 
+
+// Track the number of times each comment is used by StreetComplete users
+std::set<std::string>	g_StreetCompleteComments;
+class StreetCompleteCommentReader: public ChangesetReader {
+	std::map<std::string,long>	comments;
+
+	void initialize() {}
+	void process(const Changeset & changeset)
+	{
+		if ( changeset.application == "StreetComplete" ) {
+			auto it = comments.find(changeset.application);
+			if ( it == comments.end() ) {
+				it = comments.insert( std::pair<std::string,long>(changeset.comment, 0) ).first;
+			}
+			it->second++;
+		}
+	}
+
+	void finalize()
+	{
+		long total = 0;
+		std::vector<std::pair<long,std::string>> scComments;
+		for (const auto & c: comments ) {
+			scComments.push_back(std::pair<long,std::string>(c.second,c.first));
+			total += c.second;
+		}
+		std::sort( scComments.begin(), scComments.end() );
+		std::reverse( scComments.begin(), scComments.end() );
+		printf("\n");
+		printf("StreetComplete comments:\n");
+		double acc = 0.0;
+		for ( const auto & c: scComments ) {
+			acc += c.first;
+			printf("%9ld %.2f%% (%.2f%%) %s\n",
+				   c.first,
+				   100.0*c.first/total,
+				   100.0*acc/total,
+				   c.second.c_str());
+			g_StreetCompleteComments.insert(c.second);
+		}
+	}
+};
 
 
 // Track the most common changeset comments
@@ -342,6 +381,8 @@ class ChangesetCommentReader: public ChangesetReader {
 		std::vector<Entry> list;
 		list.reserve( comments.size());
 		for ( const auto & c: comments ) {
+			if ( g_StreetCompleteComments.find( c.first ) != g_StreetCompleteComments.end() )
+				continue;	// exclude comments from StreetComplete
 			list.push_back(Entry(c.second,c.first));
 		}
 		std::sort(list.begin(),list.end());
@@ -373,55 +414,119 @@ class DatePrinterReader: public ChangesetReader {
 	}
 };
 
-// Track the number of times each comment is used by StreetComplete users
-class StreetCompleteCommentReader: public ChangesetReader {
-	std::map<std::string,long>	comments;
+//
+class RetentionReader: public ChangesetReader {
+	typedef std::map<std::string,long> EditorToCount;
+	typedef std::map<std::string,EditorToCount> YearToEditor;	// year, editor, count
+	YearToEditor	yearToEditor;		// year: editor: count
 
 	void initialize() {}
 	void process(const Changeset & changeset)
 	{
-		if ( changeset.application == "StreetComplete" ) {
-			auto it = comments.find(changeset.application);
-			if ( it == comments.end() ) {
-				it = comments.insert( std::pair<std::string,long>(changeset.comment, 0) ).first;
-			}
-			it->second++;
+		auto year = changeset.date.substr(0,4);
+		auto editorToCountDict = yearToEditor.find(year);
+		if ( editorToCountDict == yearToEditor.end() ) {
+			editorToCountDict = yearToEditor.insert(std::pair<std::string,EditorToCount>(year,EditorToCount())).first;
 		}
+		auto editorMap = &editorToCountDict->second;
+		auto editor = editorMap->find( changeset.application ) ;
+		if ( editor == editorMap->end() ) {
+			editor = editorMap->insert(std::pair<std::string,long>(changeset.application,0)).first;
+		}
+		++editor->second;
 	}
 
 	void finalize()
 	{
-		long total = 0;
-		std::vector<std::pair<long,std::string>> scComments;
-		for (const auto & c: comments ) {
-			scComments.push_back(std::pair<long,std::string>(c.second,c.first));
-			total += c.second;
-		}
-		std::sort( scComments.begin(), scComments.end() );
-		std::reverse( scComments.begin(), scComments.end() );
 		printf("\n");
-		printf("StreetComplete comments:\n");
-		double acc = 0.0;
-		for ( const auto & c: scComments ) {
-			acc += c.first;
-			printf("%-9ld %.2f%% (%.2f%%) %s\n",
-				   c.first,
-				   100.0*c.first/total,
-				   100.0*acc/total,
-				   c.second.c_str());
+		printf("Retention per editor\n");
+		for ( const auto &year: yearToEditor ) {
+			printf("year %s\n", year.first.c_str());
+			auto eds = year.second;
+			std::vector<std::pair<long, std::string>>	edVector;
+			for ( const auto &ed: eds ) {
+				edVector.push_back(std::pair<long,std::string>(ed.second,ed.first));
+			}
+			std::sort(edVector.begin(), edVector.end());
+			std::reverse(edVector.begin(), edVector.end());
+			int count = 0;
+			for ( const auto &ed: edVector ) {
+				printf("    %10ld:  %s\n", ed.first, ed.second.c_str() );
+				if ( ++count == 10 )
+					break;
+			}
 		}
 	}
 };
 
+//
+class EditsPerChangesetReader: public ChangesetReader {
+	struct stats {
+		int edits;
+		int changesets;
+		long lastChangeset;
+	};
+	typedef std::map<std::string,struct stats> Map;
+	Map ratio;
+
+	void initialize() {}
+	void process(const Changeset & changeset)
+	{
+		auto editor = ratio.find( changeset.application );
+		if ( editor == ratio.end() ) {
+			struct stats s = { 0, 0, 0 };
+			editor = ratio.insert(std::pair<std::string, struct stats>(changeset.application,s)).first;
+		}
+		editor->second.changesets += 1;
+		editor->second.edits += changeset.editCount;
+		editor->second.lastChangeset = changeset.ident;
+
+	}
+
+	void finalize()
+	{
+		struct info {
+			std::string	editor;
+			double		ratio;
+			int			changesets;
+			long		lastChangeset;
+			bool operator < (const struct info & other) const { return ratio < other.ratio; }
+		};
+		std::vector<struct info>	vec;
+		for ( const auto &editor: ratio ) {
+			struct info info = {
+				editor.first,
+				(double)editor.second.edits / editor.second.changesets,
+				editor.second.changesets,
+				editor.second.lastChangeset
+			};
+			vec.push_back(info);
+		}
+		std::sort(vec.begin(), vec.end());
+		std::reverse(vec.begin(), vec.end() );
+
+		printf("\n");
+		printf("Edits/changeset per application\n");
+		for ( const auto &editor: vec ) {
+			if ( editor.changesets >= 100 ) {
+				printf("%11.6f:  %s [%ld]\n", editor.ratio, editor.editor.c_str(), editor.lastChangeset );
+			}
+		}
+	}
+};
+
+
 std::vector<ChangesetReader *> getReaders()
 {
 	std::vector<ChangesetReader *>	readers;
-	readers.push_back(new DatePrinterReader());
-	readers.push_back(new EditorInfoReader());
-	readers.push_back(new EditsPerUserReader());
-	readers.push_back(new ChangesetCommentReader());
+//	readers.push_back(new DatePrinterReader());
+	readers.push_back(new EditorDailyUsersReader());
+	readers.push_back(new BiggestMappersByApp());
 	readers.push_back(new StreetCompleteCommentReader());
+	readers.push_back(new ChangesetCommentReader());
 	readers.push_back(new GoMapLocaleReader());
 	readers.push_back(new GoMapInCountryReader());
+	readers.push_back(new RetentionReader());
+	readers.push_back(new EditsPerChangesetReader());
 	return readers;
 }

@@ -10,66 +10,40 @@
 
 #include "ChangesetParser.hpp"
 
-static std::string FixEditorName( const std::string & orig )
+static std::string FixEditorName( const std::string & origString )
 {
-	static const std::string names[] = {
-		"ArcGIS",
-		"bulk_upload",
-		"Every Door Android",
-		"Every Door iOS",
-		"FindvejBot",
-		"Go Kaart!!",
+	static const char * const names[] = {
 		"Go Map!!",
-		"GpsMid",
-		"iD",
-		"iLOE",
-		"JOSM",
-		"Level0",
-		"LINZ Address Import",
-		"MAPS.ME android",
-		"MAPS.ME ios",
-		"MapComplete",
-		"MapContrib",
-		"Mapzen",
-		"Merkaartor",
-		"mumpot",
-		"noteSolver_plugin",
-		"nsr2osm",
-		"OMaps",
-		"OpeningHoursFixer",
-		"OpenSeaMap",
-		"Organic Maps",
-		"Osm Go!",
-		"osm2go",
-		"Osmand",
+		"Paint The Town Red",
+		"Every Door",
+		"MAPS.ME",
 		"OsmAnd",
-		"osmapi",
-		"Osmose",
-		"OSM Conflator",
-		"OSM Contributor",
-		"OSM Localization Tool",
-		"OsmHydrant",
-		"osmtools",
-		"Pic4Review",
-		"POI+",
-		"Potlatch",
-		"RapiD",
-		"reverter_plugin",
-		"Rocketdata Conflator",
-		"RoofMapper",
-		"rosemary",
-		"QGIS",
+		"Organic Maps",
+		"OMaps",
 		"StreetComplete",
-		"teryt2osm",
-		"Vespucci",
 	};
-	const char * s = orig.c_str();
+
+	// Some apps needs to be truncated earlier than the version number
+	const char * orig = origString.c_str();
 	for ( int i = 0; i < sizeof names/sizeof names[0]; ++i ) {
-		const char * name = names[i].c_str();
-		if ( memcmp( s, name, strlen(name) ) == 0 )
+		const char * name = names[i];
+		if ( memcmp( orig, name, strlen(name) ) == 0 )
 			return name;
 	}
-	return orig;
+
+	// truncate at version number:
+	//    ' 1'
+	//    '/1'
+	//    ' v1'
+	for ( const char * s = orig+1; *s; ++s ) {
+		if ( s[0] == ' ' || (s[0] == '/' && s[-1] != '/') || s[0] == '-' ) {
+			if ( isdigit(s[1]) || (s[1] == 'v' && isdigit(s[2])) ) {
+				return origString.substr(0,s-orig);
+			}
+		}
+	}
+
+	return origString;
 }
 
 
