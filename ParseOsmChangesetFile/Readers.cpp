@@ -516,6 +516,84 @@ class EditsPerChangesetReader: public ChangesetReader {
 };
 
 
+//
+class EditStreaksReader: public ChangesetReader {
+	struct editorStats {
+		int prevDay;
+		int dayCount;
+		std::string startDate;
+	};
+	typedef std::map<std::string,struct editorStats> Editors;
+
+	struct streakInfo {
+		std::string		user;
+		std::string		startDate;
+		int				dayCount;
+		bool operator < (const struct streakInfo & other) const { return dayCount < other.dayCount; }
+	};
+	std::vector<struct streakInfo>	streakList;
+
+	std::string prevDay = "";
+	int dayCounter = 0;
+	Editors editors;
+
+	void initialize() {}
+	void process(const Changeset & changeset)
+	{
+		if ( changeset.date != prevDay ) {
+			prevDay = changeset.date;
+			++dayCounter;
+		}
+		auto editor = editors.find( changeset.user );
+		if ( editor == editors.end() ) {
+			// new editor, so create a new entry for them
+			struct editorStats s = { dayCounter, 1, changeset.date };
+			editor = editors.insert(std::pair<std::string, struct editorStats>(changeset.user,s)).first;
+		}
+		if ( editor->second.prevDay == dayCounter ) {
+			// another edit on the same day
+		} else if ( editor->second.prevDay == dayCounter-1 ) {
+			// they continued their streak
+			editor->second.prevDay = dayCounter;
+			editor->second.dayCount += 1;
+		} else {
+			// Their missed a day. Record their current streak if it's long enough to care
+			if ( editor->second.dayCount > 100 ) {
+				struct streakInfo s = { editor->first, editor->second.startDate, editor->second.dayCount };
+				streakList.push_back( s );
+			}
+			// and start a new streak
+			editor->second.prevDay = dayCounter;
+			editor->second.dayCount = 1;
+			editor->second.startDate = changeset.date;
+		}
+	}
+
+	void finalize()
+	{
+		// Handle any streaks in progress
+		for ( const auto &editor: editors ) {
+			if ( editor.second.prevDay >= dayCounter-1 ) {
+				if ( editor.second.dayCount > 100 ) {
+					struct streakInfo s = { editor.first, editor.second.startDate, editor.second.dayCount };
+					streakList.push_back( s );
+				}
+			}
+		}
+
+		std::sort(streakList.begin(), streakList.end());
+		std::reverse(streakList.begin(), streakList.end() );
+
+		printf("\n");
+		printf("Longest editing streaks:\n");
+		for ( int i = 0; i < 1000; ++i ) {
+			const auto s = streakList[i];
+			printf("%11d: %s %s\n", s.dayCount, s.startDate.c_str(), s.user.c_str() );
+		}
+	}
+};
+
+
 std::vector<ChangesetReader *> getReaders()
 {
 	std::vector<ChangesetReader *>	readers;
@@ -528,5 +606,6 @@ std::vector<ChangesetReader *> getReaders()
 	readers.push_back(new GoMapInCountryReader());
 	readers.push_back(new RetentionReader());
 	readers.push_back(new EditsPerChangesetReader());
+	readers.push_back(new EditStreaksReader());
 	return readers;
 }
