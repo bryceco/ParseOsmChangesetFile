@@ -515,62 +515,78 @@ class EditsPerChangesetReader: public ChangesetReader {
 	}
 };
 
-
 //
 class EditStreaksReader: public ChangesetReader {
-	struct editorStats {
-		int prevDay;
-		int dayCount;
-		std::string startDate;
-	};
-	typedef std::map<std::string,struct editorStats> Editors;
-
-	struct streakInfo {
-		std::string		user;
-		std::string		startDate;
-		int				dayCount;
-		bool operator < (const struct streakInfo & other) const { return dayCount < other.dayCount; }
-	};
-	std::vector<struct streakInfo>	streakList;
-
-	std::string prevDay = "";
-	int dayCounter = 0;
-	Editors editors;
+	typedef std::set<std::string>	SetOfUsers;
+	typedef std::map<std::string,SetOfUsers>	UsersForDate;
+	UsersForDate	usersForDate;
 
 	void initialize() {}
 	void process(const Changeset & changeset)
 	{
-		if ( changeset.date != prevDay ) {
-			prevDay = changeset.date;
-			++dayCounter;
-		}
-		auto editor = editors.find( changeset.user );
-		if ( editor == editors.end() ) {
-			// new editor, so create a new entry for them
-			struct editorStats s = { dayCounter, 1, changeset.date };
-			editor = editors.insert(std::pair<std::string, struct editorStats>(changeset.user,s)).first;
-		}
-		if ( editor->second.prevDay == dayCounter ) {
-			// another edit on the same day
-		} else if ( editor->second.prevDay == dayCounter-1 ) {
-			// they continued their streak
-			editor->second.prevDay = dayCounter;
-			editor->second.dayCount += 1;
-		} else {
-			// Their missed a day. Record their current streak if it's long enough to care
-			if ( editor->second.dayCount > 100 ) {
-				struct streakInfo s = { editor->first, editor->second.startDate, editor->second.dayCount };
-				streakList.push_back( s );
-			}
-			// and start a new streak
-			editor->second.prevDay = dayCounter;
-			editor->second.dayCount = 1;
-			editor->second.startDate = changeset.date;
-		}
+		usersForDate[changeset.date].insert(changeset.user);
 	}
 
 	void finalize()
 	{
+		// convert the date map to a vector of dates and users
+		std::vector<std::pair<std::string,SetOfUsers>>	dateList;
+		for (const auto &it: usersForDate) {
+			dateList.push_back(std::pair<std::string,SetOfUsers>(it.first,it.second));
+		}
+		std::sort( dateList.begin(), dateList.end() );
+
+		struct editorStats {
+			int prevDay;
+			int dayCount;
+			std::string startDate;
+		};
+		typedef std::map<std::string,struct editorStats> Editors;
+
+		struct streakInfo {
+			std::string		user;
+			std::string		startDate;
+			int				dayCount;
+			bool operator < (const struct streakInfo & other) const { return dayCount < other.dayCount; }
+		};
+		std::vector<struct streakInfo>	streakList;
+
+		std::string prevDay = "";
+		int dayCounter = 0;
+		Editors editors;
+
+		for (const auto &date: dateList) {
+			if ( date.first != prevDay ) {
+				prevDay = date.first;
+				++dayCounter;
+			}
+			for (const auto &user: date.second) {
+				auto editor = editors.find( user );
+				if ( editor == editors.end() ) {
+					// new editor, so create a new entry for them
+					struct editorStats s = { dayCounter, 1, date.first };
+					editor = editors.insert(std::pair<std::string, struct editorStats>(user,s)).first;
+				}
+				if ( editor->second.prevDay == dayCounter ) {
+					// another edit on the same day
+				} else if ( editor->second.prevDay == dayCounter-1 ) {
+					// they continued their streak
+					editor->second.prevDay = dayCounter;
+					editor->second.dayCount += 1;
+				} else {
+					// Their missed a day. Record their current streak if it's long enough to care
+					if ( editor->second.dayCount > 100 ) {
+						struct streakInfo s = { editor->first, editor->second.startDate, editor->second.dayCount };
+						streakList.push_back( s );
+					}
+					// and start a new streak
+					editor->second.prevDay = dayCounter;
+					editor->second.dayCount = 1;
+					editor->second.startDate = date.first;
+				}
+			}
+		}
+
 		// Handle any streaks in progress
 		for ( const auto &editor: editors ) {
 			if ( editor.second.prevDay >= dayCounter-1 ) {
@@ -586,9 +602,11 @@ class EditStreaksReader: public ChangesetReader {
 
 		printf("\n");
 		printf("Longest editing streaks:\n");
+		printf("| Consecutive Days | First Day of Streak | User            |\n");
+		printf("|------|------------|-----------------|\n");
 		for ( int i = 0; i < 1000; ++i ) {
 			const auto s = streakList[i];
-			printf("%11d: %s %s\n", s.dayCount, s.startDate.c_str(), s.user.c_str() );
+			printf("|%11d| %s | %s |\n", s.dayCount, s.startDate.c_str(), s.user.c_str() );
 		}
 	}
 };

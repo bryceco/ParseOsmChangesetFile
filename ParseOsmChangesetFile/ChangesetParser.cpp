@@ -6,9 +6,12 @@
 //  Copyright © 2023 Bryce Cogswell. All rights reserved.
 //
 
+#include <map>
 #include <string>
 
 #include "ChangesetParser.hpp"
+
+#define PRINT_UNUSED_TAGS	0
 
 static std::string FixEditorName( const std::string & origString )
 {
@@ -34,6 +37,7 @@ static std::string FixEditorName( const std::string & origString )
 	// truncate at version number:
 	//    ' 1'
 	//    '/1'
+	//    '-1'
 	//    ' v1'
 	for ( const char * s = orig+1; *s; ++s ) {
 		if ( s[0] == ' ' || (s[0] == '/' && s[-1] != '/') || s[0] == '-' ) {
@@ -177,8 +181,7 @@ static bool IsEqual( const char * s1, int len, const char * s2 )
 	return memcmp( s1, s2, len ) == 0 && s2[len] == 0;
 }
 
-// get xml initial header
-bool IgnoreTag( const char *&s2, const char * tag )
+static bool IgnoreTag( const char *&s2, const char * tag )
 {
 	const char * s = s2;
 	const char * key, *val;
@@ -198,6 +201,19 @@ bool IgnoreTag( const char *&s2, const char * tag )
 	s2 = s;
 	return true;
 }
+
+#if PRINT_UNUSED_TAGS
+std::map<std::string,long>	extraTags;
+static void extraTag(const char * key, int klen)
+{
+	auto s = UnescapeString(key, klen);
+	auto it = extraTags.find(s);
+	if ( it == extraTags.end() ) {
+		it = extraTags.insert(std::pair<std::string,long>(s,0)).first;
+	}
+	it->second++;
+}
+#endif
 
 ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, Changeset & changeset )
 {
@@ -249,6 +265,9 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 			changeset.max_lon = atof( val );
 		} else {
 			// ignore
+#if PRINT_UNUSED_TAGS
+			extraTag(key, klen);
+#endif
 		}
 	}
 	if ( !GetClosingBracket( s ))
@@ -292,6 +311,9 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 			} else {
 				// some tag we don't care about, but we need to consume it's value:
 				// 		changesets_count, host, imagery_used, locale
+#if PRINT_UNUSED_TAGS
+				extraTag(val, vlen);
+#endif
 				GetKeyValue( s, key, klen, val, vlen );
 			}
 			if ( !GetClosingBracket( s )) {
@@ -373,6 +395,21 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, std::string st
 	for ( auto reader: readers ) {
 		reader->finalize();
 	}
+
+#if PRINT_UNUSED_TAGS
+	// Show counts of tags we ignored
+	printf("Unused tags:\n");
+	std::vector<std::pair<std::string,long>>	extraCounts;
+	for ( const auto &it: extraTags ) {
+		extraCounts.push_back( std::pair<std::string,long>(it.first, it.second) );
+	}
+	std::sort( extraCounts.begin(), extraCounts.end() );
+	std::reverse( extraCounts.begin(), extraCounts.end() );
+	for ( const auto &it : extraCounts ) {
+		printf("%12s  %ld\n", it.first.c_str(), it.second);
+	}
+	printf("\n");
+#endif
 
 	return true;
 };
