@@ -243,9 +243,7 @@ class GoMapInCountryReader: public ChangesetReader {
 			CountryContainsPoint( COUNTRY, changeset.max_lon, changeset.min_lat ) &&
 			CountryContainsPoint( COUNTRY, changeset.max_lon, changeset.max_lat ) )
 		{
-			auto it = users.find(changeset.user);
-			if ( it == users.end() )
-				it = users.insert(std::pair<std::string,User>(changeset.user,User())).first;
+			auto it = users.insert(std::pair<std::string,User>(changeset.user,User())).first;
 			it->second.edits += changeset.editCount;
 			it->second.changesets += 1;
 		}
@@ -318,17 +316,17 @@ class GoMapLocaleReader: public ChangesetReader {
 
 // Track the number of times each comment is used by StreetComplete users
 std::set<std::string>	g_StreetCompleteComments;
-class StreetCompleteCommentReader: public ChangesetReader {
-	std::map<std::string,long>	comments;
+class StreetCompleteReader: public ChangesetReader {
+	std::map<std::string,long>	quests;
 
 	void initialize() {}
 	void process(const Changeset & changeset)
 	{
 		if ( changeset.application == "StreetComplete" ) {
-			auto it = comments.find(changeset.application);
-			if ( it == comments.end() ) {
-				it = comments.insert( std::pair<std::string,long>(changeset.comment, 0) ).first;
-			}
+			g_StreetCompleteComments.insert( changeset.comment );
+		}
+		if ( changeset.quest_type.size() > 0 ) {
+			auto it = quests.insert( std::pair<std::string,long>(changeset.quest_type, 0) ).first;
 			it->second++;
 		}
 	}
@@ -336,24 +334,23 @@ class StreetCompleteCommentReader: public ChangesetReader {
 	void finalize()
 	{
 		long total = 0;
-		std::vector<std::pair<long,std::string>> scComments;
-		for (const auto & c: comments ) {
-			scComments.push_back(std::pair<long,std::string>(c.second,c.first));
+		std::vector<std::pair<long,std::string>> scQuests;
+		for (const auto & c: quests ) {
+			scQuests.push_back(std::pair<long,std::string>(c.second,c.first));
 			total += c.second;
 		}
-		std::sort( scComments.begin(), scComments.end() );
-		std::reverse( scComments.begin(), scComments.end() );
+		std::sort( scQuests.begin(), scQuests.end() );
+		std::reverse( scQuests.begin(), scQuests.end() );
 		printf("\n");
-		printf("StreetComplete comments:\n");
+		printf("StreetComplete quests:\n");
 		double acc = 0.0;
-		for ( const auto & c: scComments ) {
+		for ( const auto & c: scQuests ) {
 			acc += c.first;
 			printf("%9ld %.2f%% (%.2f%%) %s\n",
 				   c.first,
 				   100.0*c.first/total,
 				   100.0*acc/total,
 				   c.second.c_str());
-			g_StreetCompleteComments.insert(c.second);
 		}
 	}
 };
@@ -606,6 +603,8 @@ class EditStreaksReader: public ChangesetReader {
 		printf("|------|------------|-----------------|\n");
 		for ( int i = 0; i < 1000; ++i ) {
 			const auto s = streakList[i];
+			if ( s.dayCount == 0 )
+				break;
 			printf("|%11d| %s | %s |\n", s.dayCount, s.startDate.c_str(), s.user.c_str() );
 		}
 	}
@@ -618,7 +617,7 @@ std::vector<ChangesetReader *> getReaders()
 //	readers.push_back(new DatePrinterReader());
 	readers.push_back(new EditorDailyUsersReader());
 	readers.push_back(new BiggestMappersByApp());
-	readers.push_back(new StreetCompleteCommentReader());
+	readers.push_back(new StreetCompleteReader());
 	readers.push_back(new ChangesetCommentReader());
 	readers.push_back(new GoMapLocaleReader());
 	readers.push_back(new GoMapInCountryReader());

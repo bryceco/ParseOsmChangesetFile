@@ -207,10 +207,7 @@ std::map<std::string,long>	extraTags;
 static void extraTag(const char * key, int klen)
 {
 	auto s = UnescapeString(key, klen);
-	auto it = extraTags.find(s);
-	if ( it == extraTags.end() ) {
-		it = extraTags.insert(std::pair<std::string,long>(s,0)).first;
-	}
+	auto it = extraTags.insert(std::pair<std::string,long>(s,0)).first;
 	it->second++;
 }
 #endif
@@ -228,6 +225,7 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 	changeset.ident = 0;
 	changeset.uid = 0;
 	changeset.editCount = 0;
+	changeset.quest_type = "";
 
 	if ( !GetOpeningBracket( s ) )
 		return PARSE_ERROR;
@@ -308,6 +306,13 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 						changeset.locale = UnescapeString( val, vlen );
 					}
 				}
+			} else if ( IsEqual( val, vlen, "StreetComplete:quest_type" )) {
+				if ( GetKeyValue( s, key, klen, val, vlen)) {
+					if ( IsEqual(key, klen, "v") ) {
+						changeset.quest_type = UnescapeString( val, vlen );
+					}
+				}
+
 			} else {
 				// some tag we don't care about, but we need to consume it's value:
 				// 		changesets_count, host, imagery_used, locale
@@ -398,15 +403,16 @@ bool ChangesetParser::parseXmlString( const char * xml, long len, std::string st
 
 #if PRINT_UNUSED_TAGS
 	// Show counts of tags we ignored
+	printf("\n");
 	printf("Unused tags:\n");
-	std::vector<std::pair<std::string,long>>	extraCounts;
+	std::vector<std::pair<long,std::string>>	extraCounts;
 	for ( const auto &it: extraTags ) {
-		extraCounts.push_back( std::pair<std::string,long>(it.first, it.second) );
+		extraCounts.push_back( std::pair<long,std::string>(it.second,it.first) );
 	}
 	std::sort( extraCounts.begin(), extraCounts.end() );
 	std::reverse( extraCounts.begin(), extraCounts.end() );
 	for ( const auto &it : extraCounts ) {
-		printf("%12s  %ld\n", it.first.c_str(), it.second);
+		printf("%9ld  %s\n", it.first, it.second.c_str());
 	}
 	printf("\n");
 #endif
