@@ -15,7 +15,7 @@
 // The data returned about each changeset
 class Changeset {
 public:
-	std::string date, user, application, comment, locale, quest_type;
+	std::string date, user, application, applicationRaw, comment, locale, quest_type;
 	long ident;
 	int uid, editCount;
 	double min_lat, max_lat, min_lon, max_lon;

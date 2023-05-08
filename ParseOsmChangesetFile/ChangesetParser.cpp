@@ -291,7 +291,8 @@ ChangesetParser::ParseStatus ChangesetParser::parseChangeset( const char *& s, C
 			if ( IsEqual( val, vlen, "created_by" )) {
 				if ( GetKeyValue( s, key, klen, val, vlen)) {
 					if ( IsEqual(key, klen, "v") ) {
-						changeset.application = FixEditorName( UnescapeString( val, vlen ) );
+						changeset.applicationRaw = UnescapeString( val, vlen );
+						changeset.application = FixEditorName( changeset.applicationRaw );
 					}
 				}
 			} else if ( IsEqual( val, vlen, "comment" )) {

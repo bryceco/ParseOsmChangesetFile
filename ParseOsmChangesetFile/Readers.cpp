@@ -314,6 +314,69 @@ class GoMapLocaleReader: public ChangesetReader {
 };
 
 
+// Shows which locale changesets are using
+class GoMapVersionsReader: public ChangesetReader {
+
+	typedef std::map<std::string,long>	CountForVersion;
+	std::map<std::string, CountForVersion>	months;
+
+	void initialize() {}
+	void process(const Changeset & changeset)
+	{
+		if ( changeset.application == "Go Map!!" ) {
+			auto month = changeset.date.substr(0,7);
+			auto version = changeset.applicationRaw.substr(9);
+			if ( version.c_str()[0] == 'D' ) {
+				return;
+			}
+			auto it = months.find(month);
+			if ( it == months.end() ) {
+				it = months.insert(std::pair<std::string, CountForVersion>(month,CountForVersion())).first;
+			}
+			auto it2 = it->second.find(version);
+			if ( it2 == it->second.end() ) {
+				it2 = it->second.insert(std::pair<std::string,long>(version,0)).first;
+			}
+			it2->second += 1;
+		}
+	}
+
+	void finalize()
+	{
+		// get all months as a vector
+		std::vector<std::pair<std::string, CountForVersion>> monthsVector(months.begin(), months.end());
+		// get all versions as a vector
+		std::set<std::string> versionSet;
+		for ( const auto & month: monthsVector ) {
+			for ( const auto & ver: month.second) {
+				versionSet.insert(ver.first);
+			}
+		}
+		std::vector<std::string> versionVec(versionSet.begin(), versionSet.end());
+
+		// header with each version
+		for ( const auto &version: versionVec ) {
+			printf(",%s", version.c_str());
+		}
+		printf("\n");
+
+		// iterate over months
+		for ( const auto & month: monthsVector ) {
+			printf("%s", month.first.c_str());
+			for ( const auto &version: versionVec ) {
+				const auto iter = month.second.find(version);
+				long count = 0;
+				if ( iter != month.second.end() ) {
+					count = iter->second;
+				}
+				printf(",%ld", count);
+			}
+			printf("\n");
+		}
+	}
+};
+
+
 // Track the number of times each comment is used by StreetComplete users
 std::set<std::string>	g_StreetCompleteComments;
 class StreetCompleteReader: public ChangesetReader {
@@ -601,7 +664,10 @@ class EditStreaksReader: public ChangesetReader {
 		printf("Longest editing streaks:\n");
 		printf("| Consecutive Days | First Day of Streak | User            |\n");
 		printf("|------|------------|-----------------|\n");
-		for ( int i = 0; i < 1000; ++i ) {
+		size_t count = streakList.size();
+		if ( count > 1000 )
+			count = 1000;
+		for ( int i = 0; i < count; ++i ) {
 			const auto s = streakList[i];
 			if ( s.dayCount == 0 )
 				break;
@@ -621,6 +687,7 @@ std::vector<ChangesetReader *> getReaders()
 	readers.push_back(new ChangesetCommentReader());
 	readers.push_back(new GoMapLocaleReader());
 	readers.push_back(new GoMapInCountryReader());
+	readers.push_back(new GoMapVersionsReader());
 	readers.push_back(new RetentionReader());
 	readers.push_back(new EditsPerChangesetReader());
 	readers.push_back(new EditStreaksReader());
