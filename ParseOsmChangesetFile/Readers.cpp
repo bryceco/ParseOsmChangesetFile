@@ -12,6 +12,7 @@
 #include <set>
 #include <list>
 #include <algorithm>
+#include <regex>
 
 #include <math.h>
 #include <stdlib.h>
@@ -671,7 +672,9 @@ class EditStreaksReader: public ChangesetReader {
 			const auto s = streakList[i];
 			if ( s.dayCount == 0 )
 				break;
-			printf("|%11d| %s | %s |\n", s.dayCount, s.startDate.c_str(), s.user.c_str() );
+			std::string user = std::regex_replace(s.user, std::regex(" "), "%20");
+			printf("|%11d| %s | [%s](https://www.openstreetmap.org/user/%s) |\n",
+				   s.dayCount, s.startDate.c_str(), s.user.c_str(), user.c_str() );
 		}
 	}
 };
