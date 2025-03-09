@@ -43,7 +43,7 @@ int main(int argc, const char * argv[])
 	} else {
 		path = "/tmp/cs.osm";
 	}
-	const char * startDate = "1901-01-01";
+	const char * startDate = "2024-03-03";
 	double time = timestamp();
 	parseFile( path, startDate );
 	time = timestamp() - time;

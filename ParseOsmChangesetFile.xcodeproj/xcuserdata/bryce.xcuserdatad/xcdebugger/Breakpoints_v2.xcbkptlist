@@ -14,8 +14,8 @@
             filePath = "ParseOsmChangesetFile/Readers.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "462"
-            endingLineNumber = "462"
+            startingLineNumber = "517"
+            endingLineNumber = "517"
             landmarkName = "DatePrinterReader"
             landmarkType = "3">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "ParseOsmChangesetFile/Readers.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
             landmarkName = "process(changeset)"
             landmarkType = "7">
          </BreakpointContent>
@@ -270,8 +270,8 @@
             filePath = "ParseOsmChangesetFile/Readers.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "665"
-            endingLineNumber = "665"
+            startingLineNumber = "720"
+            endingLineNumber = "720"
             landmarkName = "finalize()"
             landmarkType = "7">
          </BreakpointContent>

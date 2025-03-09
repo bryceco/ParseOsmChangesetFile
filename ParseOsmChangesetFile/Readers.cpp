@@ -428,7 +428,7 @@ class ChangesetCommentReader: public ChangesetReader {
 	void initialize() {}
 	void process(const Changeset & changeset)
 	{
-		auto it = comments.find(changeset.application);
+		auto it = comments.find(changeset.comment);
 		if ( it == comments.end() ) {
 			it = comments.insert( std::pair<std::string,long>(changeset.comment, 0) ).first;
 		}
@@ -441,10 +441,12 @@ class ChangesetCommentReader: public ChangesetReader {
 		typedef std::pair<long,std::string> Entry;
 		std::vector<Entry> list;
 		list.reserve( comments.size());
+		long total = 0;
 		for ( const auto & c: comments ) {
 			if ( g_StreetCompleteComments.find( c.first ) != g_StreetCompleteComments.end() )
 				continue;	// exclude comments from StreetComplete
 			list.push_back(Entry(c.second,c.first));
+			total += c.second;
 		}
 		std::sort(list.begin(),list.end());
 		std::reverse(list.begin(),list.end());
@@ -452,8 +454,61 @@ class ChangesetCommentReader: public ChangesetReader {
 		printf("Top 100 changeset comments:\n");
 		for ( int i = 0; i < 100; ++i ) {
 			const Entry & c = list[ i ];
-			double percent = 100.0 * c.first / list.size();
+			double percent = 100.0 * c.first / total;
 			printf("%9ld (%.6f%%) \"%s\"\n", c.first, percent, c.second.c_str());
+		}
+	}
+};
+
+// Track the most common changeset comments
+class ChangesetCommentPerEditorReader: public ChangesetReader {
+	typedef std::map<std::string,long> ChangesetCommentMap;
+	typedef std::map<std::string,ChangesetCommentMap> EditorMap;
+	EditorMap comments;
+
+	void initialize() {}
+	void process(const Changeset & changeset)
+	{
+		auto app = comments.find(changeset.application);
+		if ( app == comments.end() ) {
+			app = comments.insert( std::pair<std::string,ChangesetCommentMap>(changeset.application,
+																			 ChangesetCommentMap()) ).first;
+		}
+		auto comment = app->second.find(changeset.comment);
+		if ( comment == app->second.end() ) {
+			comment = app->second.insert( std::pair<std::string,long>(changeset.comment, 0)).first;
+		}
+		comment->second++;
+	}
+
+	void finalize()
+	{
+		printf("\n");
+		printf("Top 10 changeset comments per editor:\n");
+		for ( const auto & app: comments ) {
+			// print changeset comments
+			typedef std::pair<long,std::string> Entry;
+			std::vector<Entry> list;
+			list.reserve( app.second.size());
+			long total = 0;
+			for ( const auto & c: app.second ) {
+				if ( g_StreetCompleteComments.find( c.first ) != g_StreetCompleteComments.end() )
+					continue;	// exclude comments from StreetComplete
+				list.push_back(Entry(c.second,c.first));
+				total += c.second;
+			}
+			std::sort(list.begin(),list.end());
+			std::reverse(list.begin(),list.end());
+			long max = list.size();
+			if (max > 10) max = 10;
+			if ( max > 0 ) {
+				printf("Top 10 changeset comments for %s:\n", app.first.c_str());
+				for ( int i = 0; i < max; ++i ) {
+					const Entry & c = list[ i ];
+					double percent = 100.0 * c.first / total;
+					printf("%9ld (%.6f%%) \"%s\"\n", c.first, percent, c.second.c_str());
+				}
+			}
 		}
 	}
 };
@@ -688,6 +743,7 @@ std::vector<ChangesetReader *> getReaders()
 	readers.push_back(new BiggestMappersByApp());
 	readers.push_back(new StreetCompleteReader());
 	readers.push_back(new ChangesetCommentReader());
+	readers.push_back(new ChangesetCommentPerEditorReader());
 	readers.push_back(new GoMapLocaleReader());
 	readers.push_back(new GoMapInCountryReader());
 	readers.push_back(new GoMapVersionsReader());
