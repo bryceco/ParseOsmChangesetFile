@@ -378,6 +378,68 @@ class GoMapVersionsReader: public ChangesetReader {
 };
 
 
+// Shows the date range and changeset count for each version of Go Map!!
+class GoMapVersionDatesReader: public ChangesetReader {
+	struct VersionInfo {
+		std::string	firstDate;
+		std::string	lastDate;
+		long		changesets;
+	};
+	std::map<std::string,VersionInfo>	versions;
+
+	void initialize() {}
+	void process(const Changeset & changeset)
+	{
+		if ( changeset.application == "Go Map!!" ) {
+			if ( changeset.applicationRaw.length() <= 9 ) {
+				return;
+			}
+			auto version = changeset.applicationRaw.substr(9);
+			if ( version.c_str()[0] == 'D' ) {
+				return;
+			}
+			// skip changesets uploaded by JOSM using Go Map!! tags (e.g. "4.3.0;JOSM/1.5 (19253 en)")
+			if ( version.find(';') != std::string::npos ) {
+				return;
+			}
+			auto it = versions.find(version);
+			if ( it == versions.end() ) {
+				VersionInfo info = { changeset.date, changeset.date, 0 };
+				it = versions.insert(std::pair<std::string,VersionInfo>(version,info)).first;
+			}
+			VersionInfo & info = it->second;
+			if ( changeset.date < info.firstDate )
+				info.firstDate = changeset.date;
+			if ( changeset.date > info.lastDate )
+				info.lastDate = changeset.date;
+			info.changesets += 1;
+		}
+	}
+
+	void finalize()
+	{
+		// sort by last changeset date, most recent first
+		typedef std::pair<std::string,VersionInfo> Entry;
+		std::vector<Entry> list(versions.begin(), versions.end());
+		std::sort(list.begin(), list.end(), [](const Entry & a, const Entry & b) {
+			return a.second.lastDate > b.second.lastDate;
+		});
+
+		printf("\n");
+		printf("Go Map!! versions:\n");
+		printf("  version          first        last    changesets\n");
+		for ( const auto &entry: list ) {
+			const VersionInfo & info = entry.second;
+			printf("  %-12s %s  %s  %9ld\n",
+				   entry.first.c_str(),
+				   info.firstDate.c_str(),
+				   info.lastDate.c_str(),
+				   info.changesets);
+		}
+	}
+};
+
+
 // Track the number of times each comment is used by StreetComplete users
 std::set<std::string>	g_StreetCompleteComments;
 class StreetCompleteReader: public ChangesetReader {
@@ -747,6 +809,7 @@ std::vector<ChangesetReader *> getReaders()
 	readers.push_back(new GoMapLocaleReader());
 	readers.push_back(new GoMapInCountryReader());
 	readers.push_back(new GoMapVersionsReader());
+	readers.push_back(new GoMapVersionDatesReader());
 	readers.push_back(new RetentionReader());
 	readers.push_back(new EditsPerChangesetReader());
 	readers.push_back(new EditStreaksReader());
